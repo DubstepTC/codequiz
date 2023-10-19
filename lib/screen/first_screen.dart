@@ -35,13 +35,15 @@ class _FirstScreenState extends State<FirstScreen> {
                     const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                      ImageMain(width: 0.8, height: 0.451, picture: "assets/images/logo.png")
+                      ImageMain(width: 0.8, height: 0.45, picture: "assets/images/logo.png")
                       ]
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        AuthorizationButton(
+                      SizedBox(
+                        height: screenHeight * 0.05,
+                        child: AuthorizationButton(
                           text: "Авторизация",
                           isSelected: isSignInSelected,
                           onSelected: (isSelected) {
@@ -50,15 +52,19 @@ class _FirstScreenState extends State<FirstScreen> {
                             });
                           },
                         ),
-                        SizedBox(width: 40),
-                        AuthorizationButton(
-                          text: "Регистрация",
-                          isSelected: !isSignInSelected,
-                          onSelected: (isSelected) {
-                            setState(() {
-                              isSignInSelected = !isSelected;
-                            });
-                          },
+                        ), 
+                        SizedBox(width: screenWidth * 0.08),
+                        SizedBox(
+                          height: screenHeight * 0.05,
+                          child: AuthorizationButton(
+                            text: "Регистрация",
+                            isSelected: !isSignInSelected,
+                            onSelected: (isSelected) {
+                              setState(() {
+                                isSignInSelected = !isSelected;
+                              });
+                            },
+                          ),
                         ),
                       ],
                     ),
@@ -71,10 +77,23 @@ class _FirstScreenState extends State<FirstScreen> {
             child: Container(
               color:  const Color.fromRGBO(250, 245, 245, 0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text("43guih3uigi3")
+                  isSignInSelected 
+                  ? 
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children:[
+                      Text("ELUISDVHG")
+                    ]
+                  )
+                  :
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children:[
+                      Text("KJDDBVS")
+                    ]
+                  )
                 ],
               ),
             ),

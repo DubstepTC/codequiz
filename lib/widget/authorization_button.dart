@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+
 class AuthorizationButton extends StatefulWidget {
   final String text;
   final bool isSelected;
@@ -40,7 +42,7 @@ class _CustomButtonState extends State<AuthorizationButton> {
           style: const TextStyle(
             fontSize: 20.0,
             fontWeight: FontWeight.bold,
-            fontFamily: "Source sun pro"
+            fontFamily: "Source sun pro",
           ),
         ),
       ),
