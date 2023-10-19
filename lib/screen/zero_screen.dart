@@ -1,12 +1,24 @@
+import 'dart:async';
+import 'package:codequiz/screen/first_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:codequiz/widget/button.dart';
 import 'package:codequiz/widget/image.dart';
 import 'package:flutter/services.dart';
 
-class ZeroScreen extends StatelessWidget {
+
+class ZeroScreen extends StatefulWidget{
+
+@override
+  _ZeroScreenState createState() => _ZeroScreenState();
+}
+
+class _ZeroScreenState extends State<ZeroScreen> {
   
-  @override
+   @override
   Widget build(BuildContext context) {
+
+    Timer(Duration(seconds: 2), () { 
+      Navigator.push(context, MaterialPageRoute(builder: (context) => FirstScreen() ));
+    });
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
