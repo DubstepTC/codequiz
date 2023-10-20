@@ -78,6 +78,7 @@ class _FirstScreenState extends State<FirstScreen> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: const Color.fromARGB(255, 231, 229, 229),
         body: SingleChildScrollView(
             child: Center(
