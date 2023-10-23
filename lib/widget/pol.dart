@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class MyField extends StatefulWidget {
+class Pol extends StatefulWidget {
   final double width;
   final double height;
   final Color colortxt;
@@ -10,22 +10,22 @@ class MyField extends StatefulWidget {
   final ValueChanged<String>? onChange;
   final TextEditingController? controller;
 
-  const MyField({
-    required this.width,
-    required this.controller,
-    required this.onChange,
-    required this.labtext,
-    required this.height,
-    required this.colortxt,
-    required this.mode,
-    required this.hinttxt,
-  });
+  const Pol(
+      {required this.width,
+      this.controller,
+      this.onChange,
+      required this.labtext,
+      required this.height,
+      required this.colortxt,
+      required this.mode,
+      required this.hinttxt});
 
-  @override
-  _FieldState createState() => _FieldState();
+      @override
+  _PolState createState() => _PolState();
 }
 
-class _FieldState extends State<MyField> {
+class _PolState extends State<Pol>{
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -35,9 +35,8 @@ class _FieldState extends State<MyField> {
 
     return Container(
       width: rectangleWidth,
-      height: rectangleHeight * 0.8,
+      height: rectangleHeight,
       decoration: BoxDecoration(
-        color: const Color.fromARGB(0, 233, 229, 0),
         border: Border(
           bottom: BorderSide(
             color: widget.controller != null && widget.controller!.text.isNotEmpty
@@ -45,14 +44,27 @@ class _FieldState extends State<MyField> {
                 : Colors.black,
             width: 0.5,
           ),
-        ),
+        )
       ),
       child: Center(
         child: SizedBox(
           width: rectangleWidth - 16,
-          child: TextField(
-            onChanged: widget.onChange,
-            controller: widget.controller,
+          child: DropdownButtonFormField<String>(
+            value: null,
+            onChanged: (String? newValue) {
+              if (widget.onChange != null) {
+                widget.onChange!(newValue!);
+              }
+            },
+            items: ['Мужской', 'Женский'].map((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(
+                  value,
+                  style: TextStyle(color: Colors.black),
+                ),
+              );
+            }).toList(),
             decoration: InputDecoration(
               border: InputBorder.none,
               labelText: widget.labtext,
@@ -60,9 +72,6 @@ class _FieldState extends State<MyField> {
               hintText: widget.hinttxt,
               hintStyle: TextStyle(color: widget.colortxt),
             ),
-            style: const TextStyle(color: Colors.black, fontSize: 14),
-            textAlign: TextAlign.left,
-            obscureText: widget.mode,
           ),
         ),
       ),

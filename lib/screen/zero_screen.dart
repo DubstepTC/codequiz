@@ -1,8 +1,7 @@
 import 'dart:async';
-import 'package:codequiz/screen/first_screen.dart';
+import 'package:codequiz/screen/authorization/first_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:codequiz/widget/image.dart';
-import 'package:flutter/services.dart';
 
 
 class ZeroScreen extends StatefulWidget{
@@ -23,8 +22,7 @@ class _ZeroScreenState extends State<ZeroScreen> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         backgroundColor: Colors.white,
         body: Padding(
           padding: const EdgeInsets.all(8),
@@ -36,7 +34,7 @@ class _ZeroScreenState extends State<ZeroScreen> {
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                   ImageMain(width: 0.8, height: 0.55, picture: "assets/images/logo.png")
+                   ImageMain(width: 0.8, height: 0.55, picture: "assets/images/logo.svg")
                   ],
                 ),
                 SizedBox(height: screenHeight * 0.001),
@@ -58,7 +56,6 @@ class _ZeroScreenState extends State<ZeroScreen> {
             ),
           ),
         ),
-      ),
     );
   }
 }

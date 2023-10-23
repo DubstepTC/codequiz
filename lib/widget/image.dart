@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ImageMain extends StatelessWidget {
   final String picture;
@@ -20,14 +21,8 @@ class ImageMain extends StatelessWidget {
     return Container(
       width: rectangleWidth,
       height: rectangleHeight - 2,
-         decoration: BoxDecoration(
-         color:const Color.fromARGB(0, 156, 215, 228), 
-         borderRadius: BorderRadius.circular(10),
-       ),
-       
-       child: Align(alignment: Alignment.center,
-         child: Image.asset(picture, fit: BoxFit.contain,)
-    )
+      
+      child: SvgPicture.asset('assets/images/logo.svg', fit: BoxFit.cover)
     );
   }
 }
