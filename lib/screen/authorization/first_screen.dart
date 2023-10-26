@@ -1,14 +1,17 @@
-import 'package:codequiz/screen/main_screen.dart';
-import 'package:codequiz/screen/authorization/second_screen.dart';
+import 'package:codequiz/screen/main_screen.dart'; 
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:codequiz/screen/questions/first_option.dart';
+import 'package:codequiz/widget/authorization/reg_en_button.dart';
+import 'package:codequiz/widget/text_place.dart';
 import 'package:flutter/material.dart';
 import 'package:codequiz/widget/image.dart';
-import 'package:codequiz/widget/authorization_button.dart';
+import 'package:codequiz/widget/authorization/authorization_button.dart';
 import 'package:codequiz/widget/field.dart';
 import 'package:codequiz/widget/text_button.dart';
-import 'package:codequiz/widget/button.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:supabase/supabase.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class FirstScreen extends StatefulWidget {
   @override
@@ -22,6 +25,10 @@ class _FirstScreenState extends State<FirstScreen> {
   bool _isButtonEnabled = false;
   bool _isButtonEnabledTwo = false;
   bool isSignInSelected = true;
+  final supabase = SupabaseClient(
+  "https://itcswmslhtagkazkjuit.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml0Y3N3bXNsaHRhZ2themtqdWl0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTgyMzY3NzYsImV4cCI6MjAxMzgxMjc3Nn0.Lj0GiKJXMkN2ixwCARaOVrenlvlPSppueBtOks7VR8s",
+  );
 
   @override
   void dispose() {
@@ -46,9 +53,11 @@ class _FirstScreenState extends State<FirstScreen> {
           _passwordController.text == _repeatpasswordController.text;
     });
   }
+  
 
   @override
   Widget build(BuildContext context) {
+
     SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
         DeviceOrientation.portraitDown,
@@ -76,14 +85,30 @@ class _FirstScreenState extends State<FirstScreen> {
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          SizedBox(height: screenHeight * 0.07,), 
                           const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 ImageMain(
                                     width: 0.8,
-                                    height: 0.45,
-                                    picture: 'assets/images/car.svg')
+                                    height: 0.25,
+                                    picture: 'assets/images/logo.svg')
                               ]),
+                          const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                TextPlace(
+                                  font: 'GoodDog',
+                                  txt: "Cтудент Тест", 
+                                  align: TextAlign.center, 
+                                  st: FontWeight.bold, 
+                                  width: 0.7, 
+                                  height: 0.07, 
+                                  backgroundColor: Colors.white, 
+                                  colortxt: Colors.black, 
+                                  size: 36)
+                              ]),
+                          SizedBox(height: screenHeight * 0.06,), 
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -95,6 +120,11 @@ class _FirstScreenState extends State<FirstScreen> {
                                   onSelected: (isSelected) {
                                     setState(() {
                                       isSignInSelected = isSelected;
+                                      _nameController.text = "";
+                                      _repeatpasswordController.text = "";
+                                      _passwordController.text = "";
+                                      _isButtonEnabled = false;
+                                      _isButtonEnabledTwo = false;
                                     });
                                   },
                                 ),
@@ -108,6 +138,11 @@ class _FirstScreenState extends State<FirstScreen> {
                                   onSelected: (isSelected) {
                                     setState(() {
                                       isSignInSelected = !isSelected;
+                                      _nameController.text = "";
+                                      _repeatpasswordController.text = "";
+                                      _passwordController.text = "";
+                                      _isButtonEnabled = false;
+                                      _isButtonEnabledTwo = false;
                                     });
                                   },
                                 ),
@@ -132,13 +167,14 @@ class _FirstScreenState extends State<FirstScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     MyField(
+                                      type: TextInputType.text,
                                       width: 0.8,
                                       labtext: 'Email address/ Nickname',
                                       height: 0.1,
                                       colortxt: Colors.black,
                                       mode: false,
                                       hinttxt: '',
-                                      onChange: (value) {
+                                      onChange: (value)  {
                                         if (isSignInSelected) {
                                           setState(() {
                                             _nameController.text = value;
@@ -161,6 +197,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   MyField(
+                                    type: TextInputType.text,
                                     width: 0.8,
                                     labtext: 'Password',
                                     height: 0.1,
@@ -211,7 +248,7 @@ class _FirstScreenState extends State<FirstScreen> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  ButtonPush(
+                                  ButtonEntry(
                                     size: 16,
                                     isEnabled: _isButtonEnabled,
                                     backgroundColor: _isButtonEnabled
@@ -221,7 +258,57 @@ class _FirstScreenState extends State<FirstScreen> {
                                             220, 113, 127, 100),
                                     colortxt: Colors.white,
                                     height: 0.09,
-                                    page: (context) => MainScreen(),
+                                    check: () async {
+
+                                      String username = _nameController.text;
+                                      String password = _passwordController.text;
+
+                                      try {
+                                        var response = await supabase
+                                            .from('Users')
+                                            .select()
+                                            .eq('Nickname', username)
+                                            .eq('password', password)
+                                            .execute();
+
+                                        if (response.status == 200) {
+                                          var data = response.data;
+
+                                          // Проверка, найдены ли пользователь и пароль в базе данных
+                                          if (data.length > 0) {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => MainScreen(), 
+                                              ),
+                                            );
+                                          } else {
+                                            Fluttertoast.showToast(
+                                              msg: "Введены неправильные учетные данные",
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              gravity: ToastGravity.BOTTOM,
+                                              timeInSecForIosWeb: 1,
+                                              backgroundColor: Colors.red,
+                                              textColor: Colors.white,
+                                            );
+                                          }
+                                        } else {
+                                          // Обработка ошибки, если запрос не удался
+                                           throw Exception('Ошибка запроса к базе данных');
+                                        }
+                                        } catch (error) {
+                                          // Обработка ошибки
+                                          print(error.toString());
+                                          Fluttertoast.showToast(
+                                              msg: "Произошла ошибка: ${error.toString()}",
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              gravity: ToastGravity.BOTTOM,
+                                              timeInSecForIosWeb: 1,
+                                              backgroundColor: Colors.red,
+                                              textColor: Colors.white,
+                                          );
+                                      }
+                                    },
                                     txt: "Войти",
                                     width: 0.8,
                                   )
@@ -236,8 +323,9 @@ class _FirstScreenState extends State<FirstScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     MyField(
+                                      type: TextInputType.emailAddress,
                                       width: 0.8,
-                                      labtext: 'Email address/ Nickname',
+                                      labtext: 'Email address',
                                       height: 0.1,
                                       colortxt: Colors.black,
                                       mode: false,
@@ -265,6 +353,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   MyField(
+                                    type: TextInputType.text,
                                     width: 0.8,
                                     labtext: 'Password',
                                     height: 0.1,
@@ -295,6 +384,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   MyField(
+                                    type: TextInputType.text,
                                     width: 0.8,
                                     labtext: 'Repeat password',
                                     height: 0.1,
@@ -320,7 +410,7 @@ class _FirstScreenState extends State<FirstScreen> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  ButtonPush(
+                                  ButtonEntry(
                                     size: 16,
                                     isEnabled: _isButtonEnabledTwo,
                                     backgroundColor: _isButtonEnabledTwo
@@ -330,7 +420,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                             220, 113, 127, 100),
                                     colortxt: Colors.white,
                                     height: 0.09,
-                                    page: (context) => SecondScreen(),
+                                    check: null,
                                     txt: "Далее",
                                     width: 0.8,
                                   )

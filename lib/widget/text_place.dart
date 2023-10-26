@@ -9,8 +9,9 @@ class TextPlace extends StatelessWidget {
   final Color colortxt;
   final FontWeight st;
   final TextAlign align;
+  final String font;
 
-  const TextPlace({required this.txt, required this.align, required this.st, required this.width, required this.height, required this.backgroundColor, required this.colortxt, required this.size,});
+  const TextPlace({required this.txt,required this.font, required this.align, required this.st, required this.width, required this.height, required this.backgroundColor, required this.colortxt, required this.size,});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class TextPlace extends StatelessWidget {
           width: rectangleWidth,
           child: Text(
             txt,
-            style: TextStyle(color: colortxt, fontSize: size, fontFamily: 'Roboto', fontWeight: st, ),
+            style: TextStyle(color: colortxt, fontSize: size, fontFamily: font, fontWeight: st, ),
             textAlign: align,
           ),
         ),

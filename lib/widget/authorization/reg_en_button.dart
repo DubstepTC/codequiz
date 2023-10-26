@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-class ButtonPush extends StatelessWidget {
+class ButtonEntry extends StatelessWidget {
   final String txt;
   final Color backgroundColor;
   final double width;
   final double height; 
   final Color colortxt;
   final double size;
-  final Widget Function(BuildContext) page;
+  final void Function()? check;
   final bool isEnabled;
 
  
 
-  const ButtonPush({ required this.isEnabled, required this.txt, required this.size, required this.page, required this.width, required this.height, required this.backgroundColor, required this.colortxt});
+  const ButtonEntry({ required this.isEnabled, required this.txt, required this.size, required this.check, required this.width, required this.height, required this.backgroundColor, required this.colortxt});
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +27,7 @@ class ButtonPush extends StatelessWidget {
    
     return ElevatedButton(
         onPressed: isEnabled ?() {
-         Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: page, 
-          ),
-        );
+         check;
         }: null,
         child: Text(txt, style: TextStyle(color: colortxt, fontSize: size)), // Текст на кнопке
           style:  ElevatedButton.styleFrom(

@@ -1,3 +1,4 @@
+import 'package:codequiz/widget/text_place.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -21,8 +22,7 @@ class ImageMain extends StatelessWidget {
     return Container(
       width: rectangleWidth,
       height: rectangleHeight - 2,
-      
-      child: SvgPicture.asset('assets/images/logo.svg', fit: BoxFit.cover)
+      child: SvgPicture.asset(picture, fit: BoxFit.cover),
     );
   }
 }

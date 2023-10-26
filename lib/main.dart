@@ -1,10 +1,16 @@
 import 'package:codequiz/screen/authorization/first_screen.dart';
-import 'package:codequiz/screen/zero_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 
+void main() async {
 
-void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Supabase.initialize(
+    url: "https://itcswmslhtagkazkjuit.supabase.co",
+    anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml0Y3N3bXNsaHRhZ2themtqdWl0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTgyMzY3NzYsImV4cCI6MjAxMzgxMjc3Nn0.Lj0GiKJXMkN2ixwCARaOVrenlvlPSppueBtOks7VR8s",
+  );
   
   runApp(MyApp());
 }
@@ -16,6 +22,7 @@ class MyApp extends StatelessWidget{
 
     return MaterialApp(
       home: FirstScreen(),
+      debugShowCheckedModeBanner: false,
     );
 
   }

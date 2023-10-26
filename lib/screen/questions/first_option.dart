@@ -58,6 +58,7 @@ class FirstOption extends StatelessWidget {
                     ProgressBarWidget(17),
                     SizedBox(height: screenHeight * 0.05,),
                     const TextPlace(
+                      font: "Roboto",
                         txt: "Текст Вопроса",
                         align: TextAlign.center,
                         st: FontWeight.bold,

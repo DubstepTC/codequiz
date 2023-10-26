@@ -7,11 +7,13 @@ class MyField extends StatefulWidget {
   final String labtext;
   final String hinttxt;
   final bool mode;
+  final TextInputType? type;
   final ValueChanged<String>? onChange;
   final TextEditingController? controller;
 
   const MyField({
     required this.width,
+    required this.type,
     required this.controller,
     required this.onChange,
     required this.labtext,
@@ -53,6 +55,7 @@ class _FieldState extends State<MyField> {
           child: TextField(
             onChanged: widget.onChange,
             controller: widget.controller,
+            keyboardType: widget.type,
             decoration: InputDecoration(
               border: InputBorder.none,
               labelText: widget.labtext,

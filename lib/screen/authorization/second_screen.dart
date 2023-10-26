@@ -1,8 +1,9 @@
+import 'package:codequiz/screen/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:codequiz/widget/field.dart';
 import 'package:codequiz/widget/button.dart';
 import 'package:codequiz/widget/text_place.dart';
-import 'package:codequiz/widget/pol.dart';
+import 'package:codequiz/widget/authorization/pol.dart';
 
 class SecondScreen extends StatefulWidget {
   @override
@@ -51,6 +52,7 @@ class _SecondScreenState extends State<SecondScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextPlace(
+                      font: "Roboto",
                       txt: "Заполните анкету", 
                       align: TextAlign.center, 
                       st: FontWeight.bold, 
@@ -66,6 +68,7 @@ class _SecondScreenState extends State<SecondScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     MyField(
+                      type: TextInputType.text,
                       width: 0.8,
                       labtext: "Nickname", 
                       height: 0.1, 
@@ -86,6 +89,7 @@ class _SecondScreenState extends State<SecondScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     MyField(
+                      type: TextInputType.text,
                       width: 0.8,
                       labtext: "Образовательная организация", 
                       height: 0.1, 
@@ -106,6 +110,7 @@ class _SecondScreenState extends State<SecondScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     MyField(
+                      type: TextInputType.datetime,
                       width: 0.8,
                       labtext: "Дата рождения", 
                       height: 0.1, 
@@ -126,6 +131,7 @@ class _SecondScreenState extends State<SecondScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     MyField(
+                      type: TextInputType.text,
                       width: 0.8, 
                       labtext: "Группа", 
                       height: 0.1, 
@@ -174,7 +180,7 @@ class _SecondScreenState extends State<SecondScreen> {
                               : const Color.fromRGBO(220, 113, 127, 100),
                       colortxt: Colors.white,
                       height: 0.09,
-                      page: (context) => SecondScreen(),
+                      page: (context) => MainScreen(),
                       txt: "Зарегистрироваться",
                       width: 0.8,
                       )
