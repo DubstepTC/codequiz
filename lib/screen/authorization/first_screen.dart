@@ -1,3 +1,4 @@
+import 'package:codequiz/screen/authorization/second_screen.dart';
 import 'package:codequiz/screen/main_screen.dart'; 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -22,6 +23,7 @@ class _FirstScreenState extends State<FirstScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _repeatpasswordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   bool _isButtonEnabled = false;
   bool _isButtonEnabledTwo = false;
   bool isSignInSelected = true;
@@ -47,7 +49,7 @@ class _FirstScreenState extends State<FirstScreen> {
 
   void _checkFieldstwo() {
     setState(() {
-      _isButtonEnabledTwo = _nameController.text.isNotEmpty &&
+      _isButtonEnabledTwo = _emailController.text.isNotEmpty &&
           _passwordController.text.isNotEmpty &&
           _repeatpasswordController.text.isNotEmpty &&
           _passwordController.text == _repeatpasswordController.text;
@@ -267,7 +269,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                         var response = await supabase
                                             .from('Users')
                                             .select()
-                                            .eq('Nickname', username)
+                                            .eq('nickname', username)
                                             .eq('password', password)
                                             .execute();
 
@@ -276,6 +278,16 @@ class _FirstScreenState extends State<FirstScreen> {
 
                                           // Проверка, найдены ли пользователь и пароль в базе данных
                                           if (data.length > 0) {
+                                            Fluttertoast.showToast(
+                                              msg: "Вход в систему",
+                                              toastLength: Toast.LENGTH_LONG,
+                                              gravity: ToastGravity.BOTTOM,
+                                              timeInSecForIosWeb: 3,
+                                              backgroundColor: Colors.green,
+                                              textColor: Colors.white,
+                                              fontSize: 16.0,
+                                            );
+                                            // ignore: use_build_context_synchronously
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
@@ -333,17 +345,12 @@ class _FirstScreenState extends State<FirstScreen> {
                                       onChange: (value) {
                                         if (isSignInSelected) {
                                           setState(() {
-                                            _nameController.text = value;
-                                            _checkFieldsone();
-                                          });
-                                        } else {
-                                          setState(() {
-                                            _nameController.text = value;
-                                            _checkFieldstwo();
+                                          _emailController.text =value;
+                                          _checkFieldstwo();
                                           });
                                         }
                                       },
-                                      controller: _nameController,
+                                      controller: _emailController,
                                     ),
                                   ]),
                               SizedBox(
@@ -394,8 +401,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                     onChange: (value) {
                                       if (!isSignInSelected) {
                                         setState(() {
-                                          _repeatpasswordController.text =
-                                              value;
+                                          _repeatpasswordController.text =value;
                                           _checkFieldstwo();
                                         });
                                       }
@@ -420,7 +426,17 @@ class _FirstScreenState extends State<FirstScreen> {
                                             220, 113, 127, 100),
                                     colortxt: Colors.white,
                                     height: 0.09,
-                                    check: null,
+                                    check: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                        builder: (context) => SecondScreen(
+                                          dataFromControllerOne: _emailController.text,
+                                          dataFromControllerTwo: _passwordController.text,
+                                        ), 
+                                        ),
+                                      );
+                                    },
                                     txt: "Далее",
                                     width: 0.8,
                                   )

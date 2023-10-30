@@ -41,7 +41,7 @@ class _MainScreenState extends State<MainScreen> {
                       const ImageMain(
                           width: 0.2,
                           height: 0.1,
-                          picture: "assets/images/logo.svg"),
+                          picture: "assets/images/avatar.svg"),
                       SizedBox(
                         width: screenWidth * 0.05,
                       ),

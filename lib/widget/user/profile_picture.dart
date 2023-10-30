@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,9 +17,9 @@ class CircleImageWidget extends StatefulWidget {
 }
 
 class _CircleImageWidgetState extends State<CircleImageWidget> {
-  late File _image = File("");
-  late String _savedImagePath = "";
-  final String _defaultImagePath = 'images/check.png';
+  late File? _image = File("");
+  late String _savedImagePath;
+  final String _defaultImagePath = 'assets/images/logo.svg'; // Путь к дефолтному изображению
 
   @override
   void initState() {
@@ -28,7 +29,7 @@ class _CircleImageWidgetState extends State<CircleImageWidget> {
 
   Future<void> _loadSavedImagePath() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    _savedImagePath = (prefs.getString('imagePath') ?? _defaultImagePath);
+    _savedImagePath = prefs.getString('imagePath') ?? _defaultImagePath;
     setState(() {
       _image = File(_savedImagePath);
     });
@@ -40,8 +41,7 @@ class _CircleImageWidgetState extends State<CircleImageWidget> {
   }
 
   Future getImage() async {
-    var pickedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    var pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
       var imagePath = pickedImage.path;
       _saveImagePath(imagePath);
@@ -71,13 +71,13 @@ class _CircleImageWidgetState extends State<CircleImageWidget> {
             color: Colors.grey[300],
           ),
           child: ClipOval(
-            child: _image != null && _image.path.isNotEmpty
+            child: _image != null && _image!.path.isNotEmpty && _image!.existsSync()
                 ? Image.file(
-                    _image,
+                    _image!,
                     fit: BoxFit.cover,
                   )
-                : Image.asset(
-                    _savedImagePath,
+                : SvgPicture.asset(
+                    _defaultImagePath,
                     fit: BoxFit.cover,
                   ),
           ),

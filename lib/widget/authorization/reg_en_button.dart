@@ -7,7 +7,7 @@ class ButtonEntry extends StatelessWidget {
   final double height; 
   final Color colortxt;
   final double size;
-  final void Function()? check;
+  final VoidCallback? check;
   final bool isEnabled;
 
  
@@ -27,7 +27,7 @@ class ButtonEntry extends StatelessWidget {
    
     return ElevatedButton(
         onPressed: isEnabled ?() {
-         check;
+         check?.call();
         }: null,
         child: Text(txt, style: TextStyle(color: colortxt, fontSize: size)), // Текст на кнопке
           style:  ElevatedButton.styleFrom(
