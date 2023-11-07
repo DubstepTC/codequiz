@@ -14,6 +14,10 @@ dependencies:
   cached_network_image: ^3.2.1
   flutter_launcher_icons: ^0.13.1 
   http: ^1.1.0
+  intl: ^0.18.1
+  image_cropper: ^5.0.0
+  image_crop: ^0.4.1 
+  flutter_slidable: ^3.0.1
 
 flutter_icons:
   android: "launcher_icon"
@@ -38,4 +42,7 @@ flutter:
     - family: GoodDog
       fonts:
         - asset: assets/fonts/gooddog.ttf
+    - family: Source Sans Pro
+      fonts:
+        - asset: assets/fonts/SourceSansPro-SemiBold.ttf
   

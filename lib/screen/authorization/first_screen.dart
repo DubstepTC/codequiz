@@ -1,7 +1,5 @@
 import 'package:codequiz/screen/authorization/second_screen.dart';
 import 'package:codequiz/screen/main_screen.dart'; 
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:codequiz/screen/questions/first_option.dart';
 import 'package:codequiz/widget/authorization/reg_en_button.dart';
 import 'package:codequiz/widget/text_place.dart';
@@ -17,6 +15,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 class FirstScreen extends StatefulWidget {
   @override
   _FirstScreenState createState() => _FirstScreenState();
+  
 }
 
 class _FirstScreenState extends State<FirstScreen> {
@@ -27,6 +26,7 @@ class _FirstScreenState extends State<FirstScreen> {
   bool _isButtonEnabled = false;
   bool _isButtonEnabledTwo = false;
   bool isSignInSelected = true;
+  
   final supabase = SupabaseClient(
   "https://itcswmslhtagkazkjuit.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml0Y3N3bXNsaHRhZ2themtqdWl0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTgyMzY3NzYsImV4cCI6MjAxMzgxMjc3Nn0.Lj0GiKJXMkN2ixwCARaOVrenlvlPSppueBtOks7VR8s",
@@ -56,6 +56,28 @@ class _FirstScreenState extends State<FirstScreen> {
     });
   }
   
+  getUserIdByNickname(name) async {
+    final response = await supabase
+        .from('Users')
+        .select('id')
+        .eq('nickname', name) 
+        .single()
+        .execute();
+
+    if (response.status != 200) {
+      Fluttertoast.showToast(
+        msg: "Ошибка при получении id пользователя",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    } else {
+      final int userId = response.data['id'] as int;
+      return userId;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -171,7 +193,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                     MyField(
                                       type: TextInputType.text,
                                       width: 0.8,
-                                      labtext: 'Email address/ Nickname',
+                                      labtext: 'Nickname',
                                       height: 0.1,
                                       colortxt: Colors.black,
                                       mode: false,
@@ -275,7 +297,8 @@ class _FirstScreenState extends State<FirstScreen> {
 
                                         if (response.status == 200) {
                                           var data = response.data;
-
+                                          
+                                          int userId = await getUserIdByNickname(_nameController.text);
                                           // Проверка, найдены ли пользователь и пароль в базе данных
                                           if (data.length > 0) {
                                             Fluttertoast.showToast(
@@ -291,12 +314,12 @@ class _FirstScreenState extends State<FirstScreen> {
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                builder: (context) => MainScreen(), 
+                                                builder: (context) => MainScreen(id:userId), 
                                               ),
                                             );
                                           } else {
                                             Fluttertoast.showToast(
-                                              msg: "Введены неправильные учетные данные",
+                                              msg: "Введен неверный пароль",
                                               toastLength: Toast.LENGTH_SHORT,
                                               gravity: ToastGravity.BOTTOM,
                                               timeInSecForIosWeb: 1,
@@ -312,7 +335,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                           // Обработка ошибки
                                           print(error.toString());
                                           Fluttertoast.showToast(
-                                              msg: "Произошла ошибка: ${error.toString()}",
+                                              msg: "Данного ника нет в системе",
                                               toastLength: Toast.LENGTH_SHORT,
                                               gravity: ToastGravity.BOTTOM,
                                               timeInSecForIosWeb: 1,

@@ -19,7 +19,7 @@ class CircleImageWidget extends StatefulWidget {
 class _CircleImageWidgetState extends State<CircleImageWidget> {
   late File? _image = File("");
   late String _savedImagePath;
-  final String _defaultImagePath = 'assets/images/logo.svg'; // Путь к дефолтному изображению
+  final String _defaultImagePath = 'assets/images/avatar.svg'; // Путь к дефолтному изображению
 
   @override
   void initState() {
@@ -66,20 +66,27 @@ class _CircleImageWidgetState extends State<CircleImageWidget> {
         child: Container(
           width: rectangleWidth,
           height: rectangleHeight,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.grey[300],
+            color: Color.fromRGBO(202, 104, 117, 0),
           ),
-          child: ClipOval(
-            child: _image != null && _image!.path.isNotEmpty && _image!.existsSync()
-                ? Image.file(
-                    _image!,
-                    fit: BoxFit.cover,
-                  )
-                : SvgPicture.asset(
-                    _defaultImagePath,
-                    fit: BoxFit.cover,
-                  ),
+         child: ClipOval(
+            child: Align(
+              alignment: Alignment.center,
+              child: SizedBox(
+                width: rectangleWidth,
+                height: rectangleHeight,
+                child: _image != null && _image!.path.isNotEmpty && _image!.existsSync()
+                  ? Image.file(
+                      _image!,
+                      fit: BoxFit.fill,
+                    )
+                  : SvgPicture.asset(
+                      _defaultImagePath,
+                      fit: BoxFit.fill,
+                    ),
+              ),
+            ),
           ),
         ),
       ),

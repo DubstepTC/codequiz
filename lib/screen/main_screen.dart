@@ -1,8 +1,8 @@
-import 'package:codequiz/screen/user/user.dart';
+import 'package:supabase/supabase.dart';
+import 'package:codequiz/screen/user/user_screen.dart';
 import 'package:codequiz/widget/field.dart';
 import 'package:codequiz/widget/image.dart';
 import 'package:codequiz/widget/main/horizont_bar.dart';
-import 'package:codequiz/widget/main/search.dart';
 import 'package:codequiz/widget/main/vertical_bar.dart';
 import 'package:codequiz/widget/text_place.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +10,9 @@ import 'package:flutter/material.dart';
 class MainScreen extends StatefulWidget {
   @override
   _MainScreenState createState() => _MainScreenState();
+  final int id;
+  MainScreen({required this.id});
+  int user_role = 1;
 }
 
 class _MainScreenState extends State<MainScreen> {
@@ -17,10 +20,32 @@ class _MainScreenState extends State<MainScreen> {
   bool isSignInSelected = true;
   TextEditingController searchController = TextEditingController();
 
+  final supabase = SupabaseClient(
+  "https://itcswmslhtagkazkjuit.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml0Y3N3bXNsaHRhZ2themtqdWl0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTgyMzY3NzYsImV4cCI6MjAxMzgxMjc3Nn0.Lj0GiKJXMkN2ixwCARaOVrenlvlPSppueBtOks7VR8s",
+  );
+
+  void getUserRole() async {
+      final response = await supabase
+      .from('Users')
+      .select('role')
+      .eq('id', widget.id)
+      .execute();
+
+      if (response.status != 200) {
+        print('Ошибка запроса');
+        return;
+      }
+      final data = response.data;
+      if (data.length > 0) {
+        widget.user_role = data[0]['role'];
+      }
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+    getUserRole();
 
     return Scaffold(
       resizeToAvoidBottomInset: false, 
@@ -41,13 +66,13 @@ class _MainScreenState extends State<MainScreen> {
                       const ImageMain(
                           width: 0.2,
                           height: 0.1,
-                          picture: "assets/images/avatar.svg"),
+                          picture: "assets/images/logo.svg"),
                       SizedBox(
                         width: screenWidth * 0.05,
                       ),
                       isSignInSelected
                       ? const TextPlace(
-                          font: "Roboto",
+                          font: "Source Sans Pro",
                           txt: "Студент Тест",
                           align: TextAlign.center,
                           st: FontWeight.bold,
@@ -90,7 +115,7 @@ class _MainScreenState extends State<MainScreen> {
                         onTap: () {
                            Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => UserScreen()), // замените YourNextPage на ваш класс следующей страницы
+                            MaterialPageRoute(builder: (context) => UserScreen(id: widget.id, user_role: widget.user_role,)), // замените YourNextPage на ваш класс следующей страницы
                           );
                         },
                         child: const ImageMain(
@@ -118,7 +143,7 @@ class _MainScreenState extends State<MainScreen> {
                     children: [
                       TextPlace(
                           txt: "Тесты",
-                          font: "Roboto",
+                          font: "Source Sans Pro",
                           align: TextAlign.center,
                           st: FontWeight.bold,
                           width: 0.6,

@@ -18,8 +18,6 @@ class _ZeroScreenState extends State<ZeroScreen> {
     Timer(Duration(seconds: 2), () { 
       Navigator.push(context, MaterialPageRoute(builder: (context) => FirstScreen() ));
     });
-
-    double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
