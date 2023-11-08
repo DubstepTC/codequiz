@@ -206,10 +206,18 @@ class _SecondScreenState extends State<SecondScreen> {
               child: Center(
             child: Column(
               children: [
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    TextPlace(
+                    IconButton(
+                        icon: Icon(Icons.arrow_back),
+                        color: Color.fromRGBO(220, 113, 127, 1),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    const TextPlace(
                         font: "Source Sans Pro",
                         txt: "Заполните анкету",
                         align: TextAlign.center,

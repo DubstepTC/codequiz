@@ -46,15 +46,20 @@ class _UserScreenState extends State<UserScreen> {
                   decoration: BoxDecoration(color: Colors.white),
                   child: 
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      IconButton(
+                        icon: Icon(Icons.arrow_back),
+                        color: Color.fromRGBO(220, 113, 127, 1),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
                       const ImageMain(
                           width: 0.2,
                           height: 0.1,
                           picture: "assets/images/logo.svg"),
-                      SizedBox(
-                        width: screenWidth * 0.07,
-                      ),
                       const  TextPlace(
                           font: "Source Sans Pro",
                           txt: "Студент Тест",

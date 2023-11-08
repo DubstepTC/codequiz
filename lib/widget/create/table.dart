@@ -1,3 +1,4 @@
+import 'package:codequiz/screen/creator/qestions_settings_one.dart';
 import 'package:flutter/material.dart';
 
 class QuestionList extends StatefulWidget {
@@ -24,20 +25,15 @@ class _QuestionListState extends State<QuestionList> {
         itemBuilder: (context, index) {
           if (index < questions.length) {
             return Dismissible(
-              key: Key(questions[index]),
+             key: UniqueKey(),
               onDismissed: (direction) {
-                if (index == questions.length - 1) { // Проверка индекса последнего вопроса
-                  setState(() {
-                    questions.removeAt(index);
-                  });
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Вопрос был удалён')),
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Вы можете удалять только последний вопрос')),
-                  );
-                }
+                // Проверка индекса последнего вопроса
+                setState(() {
+                  questions.removeAt(index);
+                });
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Вопрос был удалён')),
+                );
               },
               background: Container(
                 color: Colors.red,
@@ -65,6 +61,12 @@ class _QuestionListState extends State<QuestionList> {
                   onPressed: () {
                     setState(() {
                       print('создан вопрос: ${questions[index]}');
+                      Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                            builder: (context) => QuestionSettingsFirst(), 
+                            ),
+                          );
                     });
                   },
                 ),

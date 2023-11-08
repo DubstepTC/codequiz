@@ -100,15 +100,23 @@ class _FirstCreateScreenState extends State<FirstCreateScreen> {
                 alignment: Alignment.topCenter,
                 child: Container(
                   decoration: const BoxDecoration(color: Colors.white),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      ImageMain(
+                      IconButton(
+                        icon: Icon(Icons.arrow_back),
+                        color: Color.fromRGBO(220, 113, 127, 1),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      const ImageMain(
                         width: 0.2,
                         height: 0.1,
                         picture: "assets/images/logo.svg",
                       ),
-                      TextPlace(
+                      const TextPlace(
                         font: "Source Sans Pro",
                         txt: "Студент Тест",
                         align: TextAlign.center,
