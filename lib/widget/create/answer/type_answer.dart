@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class CheckBoxWidget extends StatefulWidget {
-  @override 
   final double height;
   final double width;
+  final ValueChanged<bool>? onChanged;
+  bool cash;
 
-  const CheckBoxWidget({
-    required this.width, 
+  CheckBoxWidget({
+    Key? key,
+    required this.width,
     required this.height,
-  });
+    this.cash = false,
+    this.onChanged,
+  }) : super(key: key);
 
-
+  @override
   _CheckBoxWidgetState createState() => _CheckBoxWidgetState();
 }
 
@@ -18,11 +23,15 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
   bool isChecked = false;
 
   @override
+  void initState() {
+    super.initState();
+    isChecked = widget.cash;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // Вычисляем ширину прямоугольника
     double screenWidth = MediaQuery.of(context).size.width;
-    double rectangleWidth = screenWidth * widget.width; 
-    // Вычисляем высоту прямоугольника
+    double rectangleWidth = screenWidth * widget.width;
     double screenHeight = MediaQuery.of(context).size.height;
     double rectangleHeight = screenHeight * widget.height;
 
@@ -30,6 +39,9 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
       onTap: () {
         setState(() {
           isChecked = !isChecked;
+          if (widget.onChanged != null) {
+            widget.onChanged!(isChecked);
+          }
         });
       },
       child: Row(
@@ -57,7 +69,7 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
             style: TextStyle(
               fontSize: 20.0,
               fontFamily: "Source Sans Pro",
-              color: Color.fromRGBO(54, 79, 107, 100)
+              color: Color.fromRGBO(54, 79, 107, 100),
             ),
           ),
         ],

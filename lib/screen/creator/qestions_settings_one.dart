@@ -1,19 +1,44 @@
-import 'package:codequiz/widget/create/answer_list.dart';
+import 'dart:io';
+import 'package:codequiz/AppConstants/constants.dart';
+import 'package:codequiz/widget/create/answer/answer_list.dart';
+import 'package:codequiz/widget/create/question/button_pop_qestion.dart';
+import 'package:codequiz/widget/create/question/image_question.dart';
 import 'package:flutter/material.dart';
-import 'package:codequiz/widget/button.dart';
-import 'package:codequiz/widget/create/image_input.dart';
 import 'package:codequiz/widget/create/text_input.dart';
-import 'package:codequiz/widget/create/type_question.dart';
+import 'package:codequiz/widget/create/question/type_question.dart';
 import 'package:codequiz/widget/image.dart';
 import 'package:codequiz/widget/text_place.dart';
 
 class QuestionSettingsFirst extends StatefulWidget {
+  final List answers;
+  final String questionText;
+  final bool type;
+  final File? path;
+
+  QuestionSettingsFirst({Key? key, required this.path, required this.questionText, required this.type, required this.answers}) : super(key: key);
+
   @override
   _QuestionSettingsFirstState createState() => _QuestionSettingsFirstState();
 }
 
 class _QuestionSettingsFirstState extends State<QuestionSettingsFirst> {
+  final TextEditingController _questionController = TextEditingController();
   bool isChecked = false;
+
+  
+  @override
+  void initState() {
+    super.initState();
+    if(widget.questionText != "...") {
+      _questionController.text = widget.questionText;
+    }
+    isChecked = widget.type;
+  }
+
+ void dispose() {
+    _questionController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +104,7 @@ class _QuestionSettingsFirstState extends State<QuestionSettingsFirst> {
                             ),
                           ],
                         ),
-                        const Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             TextInput(
@@ -90,6 +115,12 @@ class _QuestionSettingsFirstState extends State<QuestionSettingsFirst> {
                               colortxt: Colors.grey,
                               mode: false,
                               hinttxt: "Введите вопрос",
+                              controller: _questionController,
+                              onChange: (value){
+                                setState(() {
+                                  _questionController.text = value;
+                                });
+                              },
                             ),
                           ],
                         ),
@@ -109,7 +140,7 @@ class _QuestionSettingsFirstState extends State<QuestionSettingsFirst> {
                             ),
                           ],
                         ),
-                        ImageUploadWidget(height: 0.4, width: 0.8),
+                        ImageUploadWidgetQuestion(height: 0.4, width: 0.8, path: widget.path,),
                         const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -211,11 +242,14 @@ class _QuestionSettingsFirstState extends State<QuestionSettingsFirst> {
         bottomNavigationBar: Padding(
             padding: const EdgeInsets.only(bottom: 16),
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              ButtonPush(
+              ButtonPopQestion(
                 isEnabled: true,
-                txt: "Продолжить",
+                txt: "Сохранить",
                 size: 16,
-                page: (context) => QuestionSettingsFirst(),
+                answers: widget.answers,
+                path: AppConstants.image,
+                questionText: _questionController.text,
+                type: isChecked,
                 width: 0.5,
                 height: 0.05,
                 backgroundColor: const Color.fromRGBO(220, 113, 127, 100),

@@ -1,25 +1,42 @@
-import 'package:codequiz/screen/creator/qestions_settings_one.dart';
-import 'package:codequiz/widget/create/type_answer.dart';
+import 'dart:io';
+import 'package:codequiz/AppConstants/constants.dart';
+import 'package:codequiz/widget/create/answer/button_pop_answer.dart';
+import 'package:codequiz/widget/create/answer/image_answer.dart';
+import 'package:codequiz/widget/create/answer/type_answer.dart';
 import 'package:flutter/material.dart';
-import 'package:codequiz/widget/button.dart';
 import 'package:codequiz/widget/create/image_input.dart';
 import 'package:codequiz/widget/create/text_input.dart';
 import 'package:codequiz/widget/image.dart';
 import 'package:codequiz/widget/text_place.dart';
 
 class AnswerSettingsFirst extends StatefulWidget {
-  String answerText;
+  final String answerText;
   final bool isBoolean;
-  final String url;
+  final File? path;
 
-  AnswerSettingsFirst({super.key,required this.url, required this.answerText, required this.isBoolean });
+  AnswerSettingsFirst({Key? key, required this.path, required this.answerText, required this.isBoolean}) : super(key: key);
+
   @override
   _AnswerSettingsFirstState createState() => _AnswerSettingsFirstState();
 }
 
 class _AnswerSettingsFirstState extends State<AnswerSettingsFirst> {
   final TextEditingController _answerController = TextEditingController();
-  bool isChecked = false;
+  bool isChecked = false; 
+
+  @override
+  void initState() {
+    super.initState();
+    isChecked = widget.isBoolean;
+    if(widget.answerText != "...") {
+      _answerController.text = widget.answerText;
+    }
+  }
+
+ void dispose() {
+    _answerController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,11 +112,12 @@ class _AnswerSettingsFirstState extends State<AnswerSettingsFirst> {
                               height: 0.2,
                               colortxt: Colors.grey,
                               mode: false,
-                              hinttxt: "Введите вопрос",
+                              hinttxt: "Введите ответ",
                               controller: _answerController,
                               onChange: (value){
-                                _answerController.text = value;
-                                widget.answerText = _answerController.text;
+                                setState(() {
+                                  _answerController.text = value;
+                                });
                               },
                             ),
                           ],
@@ -120,12 +138,21 @@ class _AnswerSettingsFirstState extends State<AnswerSettingsFirst> {
                             ),
                           ],
                         ),
-                        ImageUploadWidget(height: 0.4, width: 0.8), 
+                        ImageUploadWidgetAnswer(height: 0.4, width: 0.8, path: widget.path), 
                         const SizedBox(height: 30,),
-                        const Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            CheckBoxWidget(width: 0.1, height: 0.05,)
+                            CheckBoxWidget(
+                              cash: widget.isBoolean,
+                              width: 0.1, 
+                              height: 0.05, 
+                              onChanged: (value) {
+                                setState(() {
+                                  isChecked = !isChecked;
+                                });
+                              }
+                            )
                           ]
                         ),
                       ],
@@ -139,11 +166,13 @@ class _AnswerSettingsFirstState extends State<AnswerSettingsFirst> {
         bottomNavigationBar: Padding(
             padding: const EdgeInsets.only(bottom: 16),
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              ButtonPush(
+              ButtonPopAnswer(
+                answerText: _answerController.text,
+                check: isChecked,
+                path: AppConstants.image,
                 isEnabled: true,
-                txt: "Продолжить",
-                size: 16,
-                page: (context) => QuestionSettingsFirst(),
+                txt: "Сохранить",
+                size: 16, 
                 width: 0.5,
                 height: 0.05,
                 backgroundColor: const Color.fromRGBO(220, 113, 127, 100),

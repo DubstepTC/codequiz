@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-
-class SwitchWidget extends StatefulWidget {
-  @override
+import 'package:flutter/material.dart';class SwitchWidget extends StatefulWidget {
   final double width;
   final double height;
   final bool isChecked;
@@ -14,17 +11,24 @@ class SwitchWidget extends StatefulWidget {
     required this.onToggle,
   });
 
+  @override
   _SwitchWidgetState createState() => _SwitchWidgetState();
 }
 
 class _SwitchWidgetState extends State<SwitchWidget> {
-  bool _isSelected = false;
+  late bool _isSelected;
+
+  @override
+  void initState() {
+    super.initState();
+    _isSelected = widget.isChecked;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * widget.width, // устанавливаем ширину контейнера как 80% ширины экрана
-      height: MediaQuery.of(context).size.height * widget.height, // устанавливаем высоту контейнера
+      width: MediaQuery.of(context).size.width * widget.width,
+      height: MediaQuery.of(context).size.height * widget.height,
       padding: const EdgeInsets.all(8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

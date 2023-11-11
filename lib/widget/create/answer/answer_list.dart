@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:codequiz/screen/creator/answer_settings.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +12,7 @@ class _AnswerListState extends State<AnswerList> {
   List<String> questions = ['...'];
 
   List<Map<String, dynamic>> answerVariables = [
-    {'answerText': '...', 'isBoolean': false, 'url': '...'}
+    {'answerText': '...', 'isBoolean': false, 'path': null}
   ];
 
   Future<void> refreshList() async {
@@ -28,7 +30,7 @@ class _AnswerListState extends State<AnswerList> {
           if (index < questions.length) {
             final answer = answerVariables[index];
             var answerText = answer['answerText'] ?? '...';
-            var url = answer['url'] ?? '...';
+            var path = answer['path'];
             final isBoolean = answer['isBoolean'];
             return Dismissible(
               key: UniqueKey(),
@@ -72,7 +74,7 @@ class _AnswerListState extends State<AnswerList> {
                         builder: (context) => AnswerSettingsFirst(
                           answerText: answerText,
                           isBoolean: isBoolean,
-                          url: url, // Передача значения переменной url
+                          path: path, // Передача значения переменной url
                         ),
                       ),
                     ).then((result) {
@@ -83,8 +85,8 @@ class _AnswerListState extends State<AnswerList> {
                               result['answerText'];
                           answerVariables[index]['isBoolean'] =
                               result['isBoolean'];
-                          answerVariables[index]['url'] =
-                              result['url']; // Обновление переменной url
+                          answerVariables[index]['path'] =
+                              result['path']; // Обновление переменной url
                         });
                       }
                     });
@@ -103,7 +105,7 @@ class _AnswerListState extends State<AnswerList> {
                     answerVariables.add({
                       'answerText': '...',
                       'isBoolean': false,
-                      'url': '...'
+                      'path': null,
                     }); // Добавление переменной url при создании нового ответа
                   });
                 },

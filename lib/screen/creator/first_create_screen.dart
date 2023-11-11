@@ -239,7 +239,7 @@ class _FirstCreateScreenState extends State<FirstCreateScreen> {
                       children: [
                         ImageUploadWidget(
                           height: 0.31,
-                          width: 0.9,
+                          width: 0.8,
                           onImageSelected: _onImageSelected,
                         ),
                       ],

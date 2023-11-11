@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:codequiz/screen/main_screen.dart';
 import 'package:codequiz/widget/button.dart';
-import 'package:codequiz/widget/create/question_list.dart';
+import 'package:codequiz/widget/create/question/question_list.dart';
 import 'package:codequiz/widget/create/test_view.dart';
 import 'package:supabase/supabase.dart';
 import 'package:codequiz/widget/image.dart';

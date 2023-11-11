@@ -110,7 +110,6 @@ class _CircleImageWidgetState extends State<CircleImageWidget> {
     setState(() {});
   }
   }
-
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;

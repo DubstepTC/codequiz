@@ -5,25 +5,34 @@ import 'package:flutter_svg/flutter_svg.dart';
 // ignore: depend_on_referenced_packages
 import 'package:image_picker/image_picker.dart';
 
-class ImageUploadWidget extends StatefulWidget {
+// ignore: must_be_immutable
+class ImageUploadWidgetAnswer extends StatefulWidget {
   final double width;
   final double height;
+  final File? path;
   final void Function(String)? onImageSelected;
 
-  const ImageUploadWidget({super.key, 
+  const ImageUploadWidgetAnswer({super.key, 
     required this.height,
     required this.width,
+    this.path,
     this.onImageSelected,
   });
 
   @override
   // ignore: library_private_types_in_public_api
-  _ImageUploadWidgetState createState() => _ImageUploadWidgetState();
+  _ImageUploadWidgetStateAnswer createState() => _ImageUploadWidgetStateAnswer();
 }
 
-class _ImageUploadWidgetState extends State<ImageUploadWidget> {
+class _ImageUploadWidgetStateAnswer extends State<ImageUploadWidgetAnswer> {
   File? _imageFile;
   final picker = ImagePicker();
+  
+    @override
+  void initState() {
+    super.initState();
+      _imageFile = widget.path;
+  }
   
   Future<void> _pickImage() async {
     try {
