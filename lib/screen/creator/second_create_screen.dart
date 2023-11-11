@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:codequiz/screen/main_screen.dart';
 import 'package:codequiz/widget/button.dart';
-import 'package:codequiz/widget/create/table.dart';
+import 'package:codequiz/widget/create/question_list.dart';
 import 'package:codequiz/widget/create/test_view.dart';
 import 'package:supabase/supabase.dart';
 import 'package:codequiz/widget/image.dart';
@@ -143,7 +143,7 @@ class _SecondCreateScreenState extends State<SecondCreateScreen> {
                       isEnabled: true, 
                       txt: "Создать тест", 
                       size: 16, 
-                      page: (context) => MainScreen(id: 1), 
+                      page: (context) => MainScreen(), 
                       width: 0.4, 
                       height: 0.05, 
                       backgroundColor: const Color.fromRGBO(220, 113, 127, 100), 

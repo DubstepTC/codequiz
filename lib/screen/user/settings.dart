@@ -1,3 +1,4 @@
+import 'package:codequiz/AppConstants/constants.dart';
 import 'package:codequiz/widget/authorization/reg_en_button.dart';
 import 'package:codequiz/widget/image.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +11,6 @@ class SettingsScreen extends StatefulWidget {
   @override
   _SeettingsScreenState createState() => _SeettingsScreenState();
   int data = 0;
-  final int id;
-  SettingsScreen({required this.id});
 }
 
 class _SeettingsScreenState extends State<SettingsScreen> {
@@ -53,7 +52,7 @@ class _SeettingsScreenState extends State<SettingsScreen> {
     .upsert(
     [
       {
-        'id': widget.id,
+        'id': AppConstants.userID,
         'first_name': _firstNameController.text,
         'second_name': _secondNameController.text,
         'third_name': _thirdNameController.text,
@@ -89,7 +88,7 @@ class _SeettingsScreenState extends State<SettingsScreen> {
         Navigator.push(
             context,
             MaterialPageRoute(
-            builder: (context) => SettingsScreen(id: widget.id), 
+            builder: (context) => SettingsScreen(), 
             ),
         );
     }
@@ -98,7 +97,7 @@ class _SeettingsScreenState extends State<SettingsScreen> {
     final response = await supabase
     .from('Users')
     .select()
-    .eq('id', widget.id)
+    .eq('id', AppConstants.userID)
     .execute();
 
     if (response.status != 200) {

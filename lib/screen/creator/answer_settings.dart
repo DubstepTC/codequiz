@@ -1,18 +1,24 @@
-import 'package:codequiz/widget/create/answer_list.dart';
+import 'package:codequiz/screen/creator/qestions_settings_one.dart';
+import 'package:codequiz/widget/create/type_answer.dart';
 import 'package:flutter/material.dart';
 import 'package:codequiz/widget/button.dart';
 import 'package:codequiz/widget/create/image_input.dart';
 import 'package:codequiz/widget/create/text_input.dart';
-import 'package:codequiz/widget/create/type_question.dart';
 import 'package:codequiz/widget/image.dart';
 import 'package:codequiz/widget/text_place.dart';
 
-class QuestionSettingsFirst extends StatefulWidget {
+class AnswerSettingsFirst extends StatefulWidget {
+  String answerText;
+  final bool isBoolean;
+  final String url;
+
+  AnswerSettingsFirst({super.key,required this.url, required this.answerText, required this.isBoolean });
   @override
-  _QuestionSettingsFirstState createState() => _QuestionSettingsFirstState();
+  _AnswerSettingsFirstState createState() => _AnswerSettingsFirstState();
 }
 
-class _QuestionSettingsFirstState extends State<QuestionSettingsFirst> {
+class _AnswerSettingsFirstState extends State<AnswerSettingsFirst> {
+  final TextEditingController _answerController = TextEditingController();
   bool isChecked = false;
 
   @override
@@ -79,7 +85,7 @@ class _QuestionSettingsFirstState extends State<QuestionSettingsFirst> {
                             ),
                           ],
                         ),
-                        const Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             TextInput(
@@ -90,6 +96,11 @@ class _QuestionSettingsFirstState extends State<QuestionSettingsFirst> {
                               colortxt: Colors.grey,
                               mode: false,
                               hinttxt: "Введите вопрос",
+                              controller: _answerController,
+                              onChange: (value){
+                                _answerController.text = value;
+                                widget.answerText = _answerController.text;
+                              },
                             ),
                           ],
                         ),
@@ -109,97 +120,14 @@ class _QuestionSettingsFirstState extends State<QuestionSettingsFirst> {
                             ),
                           ],
                         ),
-                        ImageUploadWidget(height: 0.4, width: 0.8),
+                        ImageUploadWidget(height: 0.4, width: 0.8), 
+                        const SizedBox(height: 30,),
                         const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            TextPlace(
-                              txt: "Определите тип вопроса",
-                              font: "Source Sans Pro",
-                              align: TextAlign.center,
-                              st: FontWeight.bold,
-                              width: 0.9,
-                              height: 0.05,
-                              backgroundColor: Colors.transparent,
-                              colortxt: const Color.fromRGBO(54, 79, 107, 100),
-                              size: 20,
-                            ),
-                          ],
+                            CheckBoxWidget(width: 0.1, height: 0.05,)
+                          ]
                         ),
-                        SwitchWidget(
-                          height: 0.105,
-                          width: 0.9,
-                          isChecked:
-                              isChecked, // Передаем значение isChecked в SwitchWidget
-                          onToggle: (bool newValue) {
-                            setState(() {
-                              isChecked =
-                                  newValue; // Обновляем значение isChecked при изменении переключателя
-                            });
-                          },
-                        ),
-                        isChecked
-                            ? const Column(children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    TextPlace(
-                                      txt: "Введите ответ на вопрос",
-                                      font: "Source Sans Pro",
-                                      align: TextAlign.center,
-                                      st: FontWeight.bold,
-                                      width: 0.9,
-                                      height: 0.05,
-                                      backgroundColor: Colors.transparent,
-                                      colortxt:
-                                          Color.fromRGBO(54, 79, 107, 100),
-                                      size: 20,
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    TextInput(
-                                      width: 0.9,
-                                      quantity: 250,
-                                      lines: 1,
-                                      height: 0.08,
-                                      colortxt: Colors.grey,
-                                      mode: false,
-                                      hinttxt: "Введите ответ на вопрос",
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 50,)
-                              ])
-                            : Column(children: [
-                                const Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    TextPlace(
-                                      txt: "Введите варианты ответов на вопрос",
-                                      font: "Source Sans Pro",
-                                      align: TextAlign.center,
-                                      st: FontWeight.bold,
-                                      width: 0.9,
-                                      height: 0.05,
-                                      backgroundColor: Colors.transparent,
-                                      colortxt:
-                                          Color.fromRGBO(54, 79, 107, 100),
-                                      size: 20,
-                                    ),
-                                  ],
-                                ),
-                                  SizedBox(
-                                    width: double
-                                        .infinity, // Set the width constraints as per your layout needs
-                                    height:
-                                        200, // Set the height constraints as per your layout needs
-                                    child:
-                                        AnswerList(), // Include the AnswerList widget as a child
-                                  )
-                                ])
                       ],
                     ),
                   ),

@@ -11,6 +11,7 @@ import 'package:codequiz/widget/text_button.dart';
 import 'package:flutter/services.dart';
 import 'package:supabase/supabase.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:codequiz/AppConstants/constants.dart';
 
 class FirstScreen extends StatefulWidget {
   @override
@@ -74,8 +75,7 @@ class _FirstScreenState extends State<FirstScreen> {
         fontSize: 16.0,
       );
     } else {
-      final int userId = response.data['id'] as int;
-      return userId;
+      AppConstants.userID = response.data['id'] as int;
     }
   }
 
@@ -297,8 +297,8 @@ class _FirstScreenState extends State<FirstScreen> {
 
                                         if (response.status == 200) {
                                           var data = response.data;
-                                          
-                                          int userId = await getUserIdByNickname(_nameController.text);
+                                          await getUserIdByNickname(_nameController.text);
+                                          AppConstants.nickname = _nameController.text;
                                           // Проверка, найдены ли пользователь и пароль в базе данных
                                           if (data.length > 0) {
                                             Fluttertoast.showToast(
@@ -314,7 +314,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                builder: (context) => MainScreen(id:userId), 
+                                                builder: (context) => MainScreen(), 
                                               ),
                                             );
                                           } else {

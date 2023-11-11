@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:codequiz/AppConstants/constants.dart';
 import 'package:codequiz/screen/creator/second_create_screen.dart';
 import 'package:codequiz/widget/button.dart';
 import 'package:codequiz/widget/create/image_input.dart';
@@ -12,12 +13,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class FirstCreateScreen extends StatefulWidget {
   @override
-  final int userId;
-
-  const FirstCreateScreen({
-    required this.userId,
-  });
-
   _FirstCreateScreenState createState() => _FirstCreateScreenState();
 }
 
@@ -40,7 +35,7 @@ class _FirstCreateScreenState extends State<FirstCreateScreen> {
   @override
   void initState() {
     super.initState();
-    getNicknameById(widget.userId);
+    getNicknameById(AppConstants.userID);
   }
 
   void dispose() {

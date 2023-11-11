@@ -1,3 +1,5 @@
+import 'package:codequiz/widget/url_image.dart';
+import 'package:flutter/material.dart';
 import 'package:supabase/supabase.dart';
 import 'package:codequiz/screen/user/user_screen.dart';
 import 'package:codequiz/widget/field.dart';
@@ -5,50 +7,88 @@ import 'package:codequiz/widget/image.dart';
 import 'package:codequiz/widget/main/horizont_bar.dart';
 import 'package:codequiz/widget/main/vertical_bar.dart';
 import 'package:codequiz/widget/text_place.dart';
-import 'package:flutter/material.dart';
+import 'package:codequiz/AppConstants/constants.dart';
 
 class MainScreen extends StatefulWidget {
   @override
   _MainScreenState createState() => _MainScreenState();
-  final int id;
-  MainScreen({required this.id});
-  int user_role = 1;
 }
 
 class _MainScreenState extends State<MainScreen> {
   String searchText = '';
   bool isSignInSelected = true;
+  bool imageLoaded = true;
   TextEditingController searchController = TextEditingController();
 
   final supabase = SupabaseClient(
-  "https://itcswmslhtagkazkjuit.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml0Y3N3bXNsaHRhZ2themtqdWl0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTgyMzY3NzYsImV4cCI6MjAxMzgxMjc3Nn0.Lj0GiKJXMkN2ixwCARaOVrenlvlPSppueBtOks7VR8s",
+    "https://itcswmslhtagkazkjuit.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml0Y3N3bXNsaHRhZ2themtqdWl0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTgyMzY3NzYsImV4cCI6MjAxMzgxMjc3Nn0.Lj0GiKJXMkN2ixwCARaOVrenlvlPSppueBtOks7VR8s",
   );
 
-  void getUserRole() async {
-      final response = await supabase
-      .from('Users')
-      .select('role')
-      .eq('id', widget.id)
-      .execute();
+  @override
+  void initState() {
+    super.initState();
+    searchController = TextEditingController();
+    getUserRole(AppConstants.userID);
+    getImageUrlById(AppConstants.userID);
+  }
 
-      if (response.status != 200) {
-        print('Ошибка запроса');
-        return;
+   void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (ModalRoute.of(context)!.isCurrent) {
+      getUserRole(AppConstants.userID);
+      getImageUrlById(AppConstants.userID);
+    }
+  }
+  
+  Future<void> getUserRole(int id) async {
+    final response = await supabase
+        .from('Users')
+        .select('role')
+        .eq('id', id)
+        .execute();
+
+    if (response.status == 200 && response.data.length > 0) {
+      setState(() {
+        AppConstants.userRole = response.data[0]['role'];
+      });
+    } else {
+      print('Error fetching user role');
+    }
+  }
+
+  Future<void> getImageUrlById(int userId) async {
+    final response = await supabase
+        .from('Users')
+        .select('image')
+        .eq('id', userId)
+        .single()
+        .execute();
+
+    if (response.status == 200) {
+      if (response.data['image'] != null) {
+        setImageUrl(response.data['image'] as String);
       }
-      final data = response.data;
-      if (data.length > 0) {
-        widget.user_role = data[0]['role'];
+      else{
+        AppConstants.url = "";
       }
+    } else {
+      print('Error fetching user image');
+    }
+  }
+
+  void setImageUrl(String url) {
+    setState(() {
+      AppConstants.url = url;
+      imageLoaded = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    getUserRole();
-
     return Scaffold(
-      resizeToAvoidBottomInset: false, 
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -64,39 +104,38 @@ class _MainScreenState extends State<MainScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const ImageMain(
-                          width: 0.2,
-                          height: 0.1,
-                          picture: "assets/images/logo.svg"),
-                      SizedBox(
-                        width: screenWidth * 0.05,
+                        width: 0.2,
+                        height: 0.1,
+                        picture: "assets/images/logo.svg",
                       ),
+                      SizedBox(width: screenWidth * 0.02),
                       isSignInSelected
-                      ? const TextPlace(
-                          font: "Source Sans Pro",
-                          txt: "Студент Тест",
-                          align: TextAlign.center,
-                          st: FontWeight.bold,
-                          width: 0.4,
-                          height: 0.05,
-                          backgroundColor: Colors.white,
-                          colortxt: Colors.black,
-                          size: 24)
-                      : MyField(
-                            type: TextInputType.text,
-                            colortxt: Colors.black,
-                            height: 0.05,
-                            hinttxt: "Поиск",
-                            mode: false,
-                            labtext: "",
-                            width: 0.4,
-                            onChange: (value) {
-                              setState(() {
-                                searchText = value;
-                              });
-                            }, 
-                            controller: searchController,
-                          ),
-                      SizedBox(width: screenWidth * 0.05,),
+                          ? const TextPlace(
+                              font: "Source Sans Pro",
+                              txt: "Студент Тест",
+                              align: TextAlign.center,
+                              st: FontWeight.bold,
+                              width: 0.4,
+                              height: 0.05,
+                              backgroundColor: Colors.white,
+                              colortxt: Colors.black,
+                              size: 24)
+                          : MyField(
+                              type: TextInputType.text,
+                              colortxt: Colors.black,
+                              height: 0.05,
+                              hinttxt: "Поиск",
+                              mode: false,
+                              labtext: "",
+                              width: 0.4,
+                              onChange: (value) {
+                                setState(() {
+                                  searchText = value;
+                                });
+                              },
+                              controller: searchController,
+                            ),
+                      SizedBox(width: screenWidth * 0.05),
                       InkWell(
                         onTap: () {
                           setState(() {
@@ -105,24 +144,33 @@ class _MainScreenState extends State<MainScreen> {
                           });
                         },
                         child: const ImageMain(
-                          width: 0.085,
-                          height: 0.04,
+                          width: 0.09,
+                          height: 0.042,
                           picture: "assets/images/search.svg",
                         ),
                       ),
-                      SizedBox(width: screenWidth * 0.03,),
+                      SizedBox(width: screenWidth * 0.03),
                       InkWell(
                         onTap: () {
-                           Navigator.push(
+                          Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => UserScreen(id: widget.id, user_role: widget.user_role,)), // замените YourNextPage на ваш класс следующей страницы
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  UserScreen(),
+                            ),
                           );
                         },
-                        child: const ImageMain(
-                          width: 0.085,
-                          height: 0.04,
-                          picture: "assets/images/user.svg",
-                        ),
+                        child: imageLoaded
+                            ? const ImageMain(
+                                width: 0.11,
+                                height: 0.05,
+                                picture: "assets/images/user.svg",
+                              )
+                            : ImageUrl(
+                                width: 0.11,
+                                height: 0.05,
+                                picture: AppConstants.url,
+                              ),
                       ),
                     ],
                   ),
@@ -142,15 +190,16 @@ class _MainScreenState extends State<MainScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       TextPlace(
-                          txt: "Тесты",
-                          font: "Source Sans Pro",
-                          align: TextAlign.center,
-                          st: FontWeight.bold,
-                          width: 0.6,
-                          height: 0.05,
-                          backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                          colortxt: Color.fromRGBO(54, 79, 107, 100),
-                          size: 24)
+                        txt: "Тесты",
+                        font: "Source Sans Pro",
+                        align: TextAlign.center,
+                        st: FontWeight.bold,
+                        width: 0.6,
+                        height: 0.05,
+                        backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                        colortxt: Color.fromRGBO(54, 79, 107, 100),
+                        size: 24,
+                      )
                     ],
                   )
                 ],

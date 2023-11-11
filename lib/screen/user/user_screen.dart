@@ -1,19 +1,16 @@
+import 'package:flutter/material.dart';
+import 'package:codequiz/AppConstants/constants.dart';
 import 'package:codequiz/screen/creator/first_create_screen.dart';
 import 'package:codequiz/screen/user/settings.dart';
 import 'package:codequiz/widget/authorization/reg_en_button.dart';
-import 'package:codequiz/widget/image.dart';
 import 'package:codequiz/widget/main/vertical_bar.dart';
 import 'package:codequiz/widget/text_place.dart';
 import 'package:codequiz/widget/user/nick.dart';
 import 'package:codequiz/widget/user/profile_picture.dart';
 import 'package:codequiz/widget/user/user_button.dart';
-import 'package:flutter/material.dart';
+import 'package:codequiz/widget/image.dart';
 
 class UserScreen extends StatefulWidget {
-  final int id;
-  final int user_role;
-  UserScreen({required this.id, required this.user_role});
-  
   @override
   _UserScreenState createState() => _UserScreenState();
 }
@@ -78,7 +75,7 @@ class _UserScreenState extends State<UserScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                            builder: (context) => SettingsScreen(id: widget.id), 
+                            builder: (context) => SettingsScreen(), 
                             ),
                           );
                         },
@@ -96,9 +93,15 @@ class _UserScreenState extends State<UserScreen> {
                 ),
               ),
             ),
-            const Expanded(
+            Expanded(
               flex: 3,
-              child: CircleImageWidget(height: 0.5, width: 0.5,),
+              child: CircleImageWidget(
+                height: 0.5, 
+                width: 0.55,
+                onImageChanged: () {
+                  setState(() {}); // Update the page when the image changes
+                },
+              ),
             ),
             Expanded(
               flex: 1,
@@ -107,7 +110,6 @@ class _UserScreenState extends State<UserScreen> {
                 children: [
                   const SizedBox(width: 32),
                   NicknameWidget(
-                    userId: widget.id,
                     onEditPressed: (value) {
                       setState(() {
                         _nameController.text = value; 
@@ -119,7 +121,7 @@ class _UserScreenState extends State<UserScreen> {
             ),
             Row(
               children: [ 
-                if (widget.user_role == 1)
+                if (AppConstants.userRole == 1)
                   Expanded(
                     
                     flex: 1,
@@ -136,7 +138,7 @@ class _UserScreenState extends State<UserScreen> {
                       ],
                     ),
                   )
-                else if (widget.user_role != 1)
+                else if (AppConstants.userRole != 1)
                   Expanded(
                     flex: 1,
                     child: Row(
@@ -200,7 +202,7 @@ class _UserScreenState extends State<UserScreen> {
                         check: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => FirstCreateScreen(userId: widget.id,)), // замените YourNextPage на ваш класс следующей страницы
+                            MaterialPageRoute(builder: (context) => FirstCreateScreen()), // замените YourNextPage на ваш класс следующей страницы
                           );
                         },
                       )

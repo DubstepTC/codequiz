@@ -1,15 +1,14 @@
 import 'dart:ffi';
 
+import 'package:codequiz/AppConstants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase/supabase.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class NicknameWidget extends StatelessWidget {
-  final int userId;
   final void Function(String)? onEditPressed;
 
   NicknameWidget({
-    required this.userId,
     required this.onEditPressed,
   });
 
@@ -74,7 +73,7 @@ class NicknameWidget extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return FutureBuilder<String>(
-      future: getNicknameById(userId),
+      future: getNicknameById(AppConstants.userID),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();
@@ -121,7 +120,7 @@ class NicknameWidget extends StatelessWidget {
                           const SizedBox(width: 24),
                           TextButton(
                             onPressed: () {
-                              updateNicknameById(userId, _editController.text);
+                              updateNicknameById(AppConstants.userID, _editController.text);
                               Navigator.of(context).pop();
                               onEditPressed?.call(_editController.text);
                             },
