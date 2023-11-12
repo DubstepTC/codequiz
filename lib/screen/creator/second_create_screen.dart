@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:codequiz/screen/main_screen.dart';
 import 'package:codequiz/widget/button.dart';
 import 'package:codequiz/widget/create/question/question_list.dart';
@@ -14,7 +12,11 @@ class SecondCreateScreen extends StatefulWidget {
   final String testname;
   final String descriptive; 
   final String? path;
-   SecondCreateScreen({
+
+   List<Map<dynamic, dynamic>>? receivedData;
+
+   SecondCreateScreen({super.key, 
+      this.receivedData,
       required this.nickname,
       required this.descriptive,
       required this.testname,
@@ -32,9 +34,7 @@ class _SecondCreateScreenState extends State<SecondCreateScreen> {
   );
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
-
+    print(widget.receivedData);
     return Scaffold(
       resizeToAvoidBottomInset: false, 
       body: SafeArea(
@@ -130,7 +130,13 @@ class _SecondCreateScreenState extends State<SecondCreateScreen> {
             Expanded(
               flex: 6,
               child: Center(
-                child: QuestionList(),
+                child: QuestionList(
+                  onDataReceived: (data){
+                    setState(() {
+                      widget.receivedData = data;
+                    });
+                  },
+                ),
               ), 
             ),
             Expanded(

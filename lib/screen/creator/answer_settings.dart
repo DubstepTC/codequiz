@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:codequiz/AppConstants/constants.dart';
 import 'package:codequiz/widget/create/answer/button_pop_answer.dart';
 import 'package:codequiz/widget/create/answer/image_answer.dart';
 import 'package:codequiz/widget/create/answer/type_answer.dart';

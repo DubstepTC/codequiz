@@ -7,7 +7,10 @@ import 'package:codequiz/widget/text_place.dart';
 import 'package:supabase/supabase.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+// ignore: must_be_immutable
 class SettingsScreen extends StatefulWidget {
+  SettingsScreen({super.key});
+
   @override
   _SeettingsScreenState createState() => _SeettingsScreenState();
   int data = 0;

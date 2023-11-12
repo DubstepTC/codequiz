@@ -21,6 +21,7 @@ class CircleImageWidget extends StatefulWidget {
 }
 
 class _CircleImageWidgetState extends State<CircleImageWidget> {
+  // ignore: unused_field
   File? _image;
   late String _savedImagePath;
   final String _defaultImagePath = 'assets/images/avatar.svg'; // Path to the default image
@@ -63,6 +64,7 @@ class _CircleImageWidgetState extends State<CircleImageWidget> {
     String randomNumber = random.nextInt(100000000).toString().padLeft(9, '0');
     String img = "img $randomNumber";
 
+    // ignore: unused_local_variable
     final response = await supabase.storage
         .from('images')
         .upload('images/$img.jpg', imageFile);

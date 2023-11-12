@@ -38,6 +38,10 @@ class _QuestionSettingsFirstState extends State<QuestionSettingsFirst> {
       _answerController.text = widget.answerText;
     }
     isChecked = widget.type;
+    if(widget.answers != null)
+    {
+      widget.receivedData = widget.answers;
+    }
   }
 
  void dispose() {

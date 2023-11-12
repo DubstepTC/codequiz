@@ -2,6 +2,10 @@ import 'package:codequiz/screen/creator/qestions_settings_one.dart';
 import 'package:flutter/material.dart';
 
 class QuestionList extends StatefulWidget {
+  final Function(List<Map<dynamic, dynamic>>) onDataReceived;
+
+  const QuestionList({Key? key, required this.onDataReceived}) : super(key: key);
+  
   @override
   _QuestionListState createState() => _QuestionListState();
 }
@@ -13,9 +17,22 @@ class _QuestionListState extends State<QuestionList> {
    {'questionText': '...', 'type': false, 'path': null, 'answers': null, 'answerText': '...'}
   ];
 
+  List<Map<dynamic, dynamic>> savedata = [
+   {'questionText': '...', 'type': false, 'path': null, 'answers': null, 'answerText': '...'}
+  ];
+
   Future<void> refreshList() async {
     await Future.delayed(Duration(milliseconds: 300));
-    setState(() {});
+    setState(() {
+      savedata = List.from(questionVariables);
+      widget.onDataReceived(savedata);
+      _sendDataBack(savedata);
+    });
+  }
+
+  void _sendDataBack(List<Map<dynamic, dynamic>> receivedData) {
+    // отправляем данные обратно в родительский виджет
+    widget.onDataReceived(receivedData);
   }
 
   @override
@@ -108,6 +125,7 @@ class _QuestionListState extends State<QuestionList> {
                         'answers': null,
                         'answerText': '...',
                       });
+                      savedata = List.from(questionVariables);
                     });
                   },
                 ),

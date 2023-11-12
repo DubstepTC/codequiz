@@ -14,8 +14,11 @@ import 'package:flutter/material.dart';
   }
 }
 
+// ignore: must_be_immutable
 class FirstOption extends StatelessWidget {
   late List<Color> _sectionColors;
+
+  FirstOption({super.key});
 
   List<Widget> _buildSectionWidgets() {
     return List<Widget>.generate(20, (index) {

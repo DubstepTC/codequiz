@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:codequiz/AppConstants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase/supabase.dart';
