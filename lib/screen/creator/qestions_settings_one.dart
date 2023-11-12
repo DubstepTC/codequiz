@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:codequiz/AppConstants/constants.dart';
 import 'package:codequiz/widget/create/answer/answer_list.dart';
 import 'package:codequiz/widget/create/question/button_pop_qestion.dart';
 import 'package:codequiz/widget/create/question/image_question.dart';
@@ -15,7 +14,7 @@ class QuestionSettingsFirst extends StatefulWidget {
   final String questionText;
   final String answerText;
   final bool type;
-  final File? path;
+  File? path;
   List<Map<dynamic, dynamic>>? receivedData;
 
   QuestionSettingsFirst({super.key, required this.path, required this.answerText, this.receivedData, required this.questionText, required this.type, required this.answers});
@@ -28,7 +27,6 @@ class _QuestionSettingsFirstState extends State<QuestionSettingsFirst> {
   final TextEditingController _questionController = TextEditingController();
   final TextEditingController _answerController = TextEditingController();
   bool isChecked = false;
-  File? imageQuestion;
   
   @override
   void initState() {
@@ -40,15 +38,6 @@ class _QuestionSettingsFirstState extends State<QuestionSettingsFirst> {
       _answerController.text = widget.answerText;
     }
     isChecked = widget.type;
-    if(widget.path != null)
-    {
-      imageQuestion = widget.path;
-    }
-    else
-    {
-      imageQuestion = AppConstants.image;
-    }
-    widget.receivedData ??= widget.answers;
   }
 
  void dispose() {
@@ -156,7 +145,16 @@ class _QuestionSettingsFirstState extends State<QuestionSettingsFirst> {
                             ),
                           ],
                         ),
-                        ImageUploadWidgetQuestion(height: 0.4, width: 0.8, path: widget.path,),
+                        ImageUploadWidgetQuestion(
+                          height: 0.4, 
+                          width: 0.8, 
+                          path: widget.path,
+                          onImageSelected: (file) {
+                            setState(() {
+                              widget.path = file;
+                            });
+                          },
+                        ),
                         const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -276,7 +274,7 @@ class _QuestionSettingsFirstState extends State<QuestionSettingsFirst> {
                 txt: "Сохранить",
                 size: 16,
                 answers: widget.receivedData,
-                path: imageQuestion,
+                path: widget.path,
                 questionText: _questionController.text,
                 answerText: _answerController.text,
                 type: isChecked,

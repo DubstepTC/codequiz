@@ -32,7 +32,6 @@ class _AnswerSettingsFirstState extends State<AnswerSettingsFirst> {
     if(widget.answerText != "...") {
       _answerController.text = widget.answerText;
     }
-    widget.path ??= AppConstants.imageAnswer ;
   }
 
  @override
@@ -141,7 +140,16 @@ class _AnswerSettingsFirstState extends State<AnswerSettingsFirst> {
                             ),
                           ],
                         ),
-                        ImageUploadWidgetAnswer(height: 0.4, width: 0.8, path: widget.path), 
+                        ImageUploadWidgetAnswer(
+                          height: 0.4, 
+                          width: 0.8, 
+                          path: widget.path, 
+                          onImageSelected: (file) {
+                            setState(() {
+                              widget.path = file;
+                            });
+                          },
+                        ), 
                         const SizedBox(height: 30,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,

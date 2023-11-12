@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:codequiz/AppConstants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 // ignore: depend_on_referenced_packages
@@ -10,14 +9,14 @@ class ImageUploadWidgetAnswer extends StatefulWidget {
   final double width;
   final double height;
   final File? path;
-  final void Function(String)? onImageSelected;
+  final void Function(File)? onImageSelected;
 
-  const ImageUploadWidgetAnswer({super.key, 
+  const ImageUploadWidgetAnswer({Key? key, 
     required this.height,
     required this.width,
     this.path,
     this.onImageSelected,
-  });
+  }): super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -44,7 +43,7 @@ class _ImageUploadWidgetStateAnswer extends State<ImageUploadWidgetAnswer> {
         });
 
         if (widget.onImageSelected != null) {
-          widget.onImageSelected!(_imageFile!.path);
+          widget.onImageSelected!(_imageFile!);
         }
       }
     } catch (e) {
@@ -63,7 +62,6 @@ class _ImageUploadWidgetStateAnswer extends State<ImageUploadWidgetAnswer> {
         ),
       );
     }
-    AppConstants.imageAnswer = _imageFile;
   }
 
   @override
