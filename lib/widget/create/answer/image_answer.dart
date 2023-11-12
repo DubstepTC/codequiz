@@ -63,7 +63,7 @@ class _ImageUploadWidgetStateAnswer extends State<ImageUploadWidgetAnswer> {
         ),
       );
     }
-    AppConstants.image = _imageFile;
+    AppConstants.imageAnswer = _imageFile;
   }
 
   @override

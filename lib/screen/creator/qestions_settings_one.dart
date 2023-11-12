@@ -9,13 +9,16 @@ import 'package:codequiz/widget/create/question/type_question.dart';
 import 'package:codequiz/widget/image.dart';
 import 'package:codequiz/widget/text_place.dart';
 
+// ignore: must_be_immutable
 class QuestionSettingsFirst extends StatefulWidget {
-  final List answers;
+  final List<Map<dynamic, dynamic>>? answers;
   final String questionText;
+  final String answerText;
   final bool type;
   final File? path;
+  List<Map<dynamic, dynamic>>? receivedData;
 
-  QuestionSettingsFirst({Key? key, required this.path, required this.questionText, required this.type, required this.answers}) : super(key: key);
+  QuestionSettingsFirst({super.key, required this.path, required this.answerText, this.receivedData, required this.questionText, required this.type, required this.answers});
 
   @override
   _QuestionSettingsFirstState createState() => _QuestionSettingsFirstState();
@@ -23,8 +26,9 @@ class QuestionSettingsFirst extends StatefulWidget {
 
 class _QuestionSettingsFirstState extends State<QuestionSettingsFirst> {
   final TextEditingController _questionController = TextEditingController();
+  final TextEditingController _answerController = TextEditingController();
   bool isChecked = false;
-
+  File? imageQuestion;
   
   @override
   void initState() {
@@ -32,7 +36,19 @@ class _QuestionSettingsFirstState extends State<QuestionSettingsFirst> {
     if(widget.questionText != "...") {
       _questionController.text = widget.questionText;
     }
+    if(widget.answerText != "...") {
+      _answerController.text = widget.answerText;
+    }
     isChecked = widget.type;
+    if(widget.path != null)
+    {
+      imageQuestion = widget.path;
+    }
+    else
+    {
+      imageQuestion = AppConstants.image;
+    }
+    widget.receivedData ??= widget.answers;
   }
 
  void dispose() {
@@ -170,8 +186,8 @@ class _QuestionSettingsFirstState extends State<QuestionSettingsFirst> {
                           },
                         ),
                         isChecked
-                            ? const Column(children: [
-                                Row(
+                            ? Column(children: [
+                                const Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     TextPlace(
@@ -199,6 +215,12 @@ class _QuestionSettingsFirstState extends State<QuestionSettingsFirst> {
                                       colortxt: Colors.grey,
                                       mode: false,
                                       hinttxt: "Введите ответ на вопрос",
+                                      controller: _answerController,
+                                      onChange: (value){
+                                        setState(() {
+                                          _answerController.text = value;
+                                        });
+                                      },
                                     ),
                                   ],
                                 ),
@@ -228,7 +250,14 @@ class _QuestionSettingsFirstState extends State<QuestionSettingsFirst> {
                                     height:
                                         200, // Set the height constraints as per your layout needs
                                     child:
-                                        AnswerList(), // Include the AnswerList widget as a child
+                                        AnswerList(
+                                          answers: widget.answers,
+                                          onDataReceived: (data) {
+                                            setState(() {
+                                              widget.receivedData = data;
+                                            });
+                                          },
+                                        ), // Include the AnswerList widget as a child
                                   )
                                 ])
                       ],
@@ -246,9 +275,10 @@ class _QuestionSettingsFirstState extends State<QuestionSettingsFirst> {
                 isEnabled: true,
                 txt: "Сохранить",
                 size: 16,
-                answers: widget.answers,
-                path: AppConstants.image,
+                answers: widget.receivedData,
+                path: imageQuestion,
                 questionText: _questionController.text,
+                answerText: _answerController.text,
                 type: isChecked,
                 width: 0.5,
                 height: 0.05,

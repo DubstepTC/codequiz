@@ -6,5 +6,6 @@ class AppConstants {
   static String nickname = "";
   static int userID = 0;
   static File? image;
+  static File? imageAnswer;
   // Другие общие переменные
 }// TODO Implement this library.

@@ -13,7 +13,8 @@ class ButtonPopQestion extends StatelessWidget {
 
   final String questionText;
   final bool type;
-  final List answers;
+  final List<Map<dynamic, dynamic>>? answers;
+  final String answerText;
   final File? path;
 
   const ButtonPopQestion({ 
@@ -25,6 +26,7 @@ class ButtonPopQestion extends StatelessWidget {
     required this.backgroundColor, 
     required this.colortxt,
     required this.questionText,
+    required this.answerText,
     required this.type,
     required this.answers,
     required this.path,
@@ -48,11 +50,8 @@ class ButtonPopQestion extends StatelessWidget {
             'type': type,
             'path': path,
             'answers': answers,
-        });  
-        print(questionText);
-        print(type);
-        print(path);
-        print(answers);
+            'answerText': answerText,
+        });
        }: null,
         child: Text(txt, style: TextStyle(color: colortxt, fontSize: size)), // Текст на кнопке
           style:  ElevatedButton.styleFrom(

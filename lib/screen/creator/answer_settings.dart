@@ -4,25 +4,26 @@ import 'package:codequiz/widget/create/answer/button_pop_answer.dart';
 import 'package:codequiz/widget/create/answer/image_answer.dart';
 import 'package:codequiz/widget/create/answer/type_answer.dart';
 import 'package:flutter/material.dart';
-import 'package:codequiz/widget/create/image_input.dart';
 import 'package:codequiz/widget/create/text_input.dart';
 import 'package:codequiz/widget/image.dart';
 import 'package:codequiz/widget/text_place.dart';
 
+// ignore: must_be_immutable
 class AnswerSettingsFirst extends StatefulWidget {
   final String answerText;
   final bool isBoolean;
-  final File? path;
+  File? path;
 
-  AnswerSettingsFirst({Key? key, required this.path, required this.answerText, required this.isBoolean}) : super(key: key);
+  AnswerSettingsFirst({super.key, required this.path, required this.answerText, required this.isBoolean});
 
   @override
+  // ignore: library_private_types_in_public_api
   _AnswerSettingsFirstState createState() => _AnswerSettingsFirstState();
 }
 
 class _AnswerSettingsFirstState extends State<AnswerSettingsFirst> {
   final TextEditingController _answerController = TextEditingController();
-  bool isChecked = false; 
+  bool isChecked = false;
 
   @override
   void initState() {
@@ -31,9 +32,11 @@ class _AnswerSettingsFirstState extends State<AnswerSettingsFirst> {
     if(widget.answerText != "...") {
       _answerController.text = widget.answerText;
     }
+    widget.path ??= AppConstants.imageAnswer ;
   }
 
- void dispose() {
+ @override
+  void dispose() {
     _answerController.dispose();
     super.dispose();
   }
@@ -169,7 +172,7 @@ class _AnswerSettingsFirstState extends State<AnswerSettingsFirst> {
               ButtonPopAnswer(
                 answerText: _answerController.text,
                 check: isChecked,
-                path: AppConstants.image,
+                path: widget.path,
                 isEnabled: true,
                 txt: "Сохранить",
                 size: 16, 

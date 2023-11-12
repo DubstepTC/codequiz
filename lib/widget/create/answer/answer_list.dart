@@ -1,23 +1,50 @@
-import 'dart:io';
-
 import 'package:codequiz/screen/creator/answer_settings.dart';
 import 'package:flutter/material.dart';
 
 class AnswerList extends StatefulWidget {
+  final Function(List<Map<dynamic, dynamic>>) onDataReceived;
+  final List<Map<dynamic, dynamic>>? answers;
+
+  const AnswerList({Key? key, required this.onDataReceived, required this.answers}) : super(key: key);
   @override
   _AnswerListState createState() => _AnswerListState();
 }
 
 class _AnswerListState extends State<AnswerList> {
-  List<String> questions = ['...'];
+  List<dynamic> questions = ['...'];
 
-  List<Map<String, dynamic>> answerVariables = [
+  List<Map<dynamic, dynamic>> answerVariables = [
+    {'answerText': '...', 'isBoolean': false, 'path': null}
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.answers != null) {
+      // Если переменная answer не пустая, используем ее для инициализации списка ответов
+      answerVariables = List.from(widget.answers!);
+      savedData = List.from(widget.answers!);
+    } 
+  }
+
+  // Добавляем новую переменную для хранения данных
+  List<Map<dynamic, dynamic>> savedData = [
     {'answerText': '...', 'isBoolean': false, 'path': null}
   ];
 
   Future<void> refreshList() async {
     await Future.delayed(Duration(milliseconds: 300));
-    setState(() {});
+    setState(() {
+      // Сохраняем данные в переменную savedData при обновлении списка
+      savedData = List.from(answerVariables);
+      widget.onDataReceived(savedData);
+      _sendDataBack(savedData);
+    });
+  }
+
+   void _sendDataBack(List<Map<dynamic, dynamic>> receivedData) {
+    // отправляем данные обратно в родительский виджет
+    widget.onDataReceived(receivedData);
   }
 
   @override
@@ -38,6 +65,7 @@ class _AnswerListState extends State<AnswerList> {
                 setState(() {
                   questions.removeAt(index);
                   answerVariables.removeAt(index);
+                  savedData = List.from(answerVariables);
                 });
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Ответ был удалён')),
@@ -86,7 +114,8 @@ class _AnswerListState extends State<AnswerList> {
                           answerVariables[index]['isBoolean'] =
                               result['isBoolean'];
                           answerVariables[index]['path'] =
-                              result['path']; // Обновление переменной url
+                              result['path'];
+                          _sendDataBack(savedData);
                         });
                       }
                     });
@@ -106,7 +135,8 @@ class _AnswerListState extends State<AnswerList> {
                       'answerText': '...',
                       'isBoolean': false,
                       'path': null,
-                    }); // Добавление переменной url при создании нового ответа
+                    }); 
+                    savedData = List.from(answerVariables); // Добавление переменной url при создании нового ответа
                   });
                 },
               ),

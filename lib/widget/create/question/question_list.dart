@@ -9,8 +9,8 @@ class QuestionList extends StatefulWidget {
 class _QuestionListState extends State<QuestionList> {
   List<String> questionTexts = ['...'];
 
-  List<Map<String, dynamic>> questionVariables = [
-    {'questionText': '...', 'type': false, 'path': null, 'answers': []}
+  List<Map<dynamic, dynamic>> questionVariables = [
+   {'questionText': '...', 'type': false, 'path': null, 'answers': null, 'answerText': '...'}
   ];
 
   Future<void> refreshList() async {
@@ -32,6 +32,7 @@ class _QuestionListState extends State<QuestionList> {
               final type = question['type'];
               var path = question['path'];
               var answers = question['answers'];
+              var answerText = question['answerText'];
               return Dismissible(
                 key: UniqueKey(),
                 onDismissed: (direction) {
@@ -75,6 +76,7 @@ class _QuestionListState extends State<QuestionList> {
                             type: type,
                             path: path,
                             answers: answers,
+                            answerText: answerText,
                           ),
                         ),
                       );
@@ -84,6 +86,7 @@ class _QuestionListState extends State<QuestionList> {
                           questionVariables[index]['type'] = result['type'];
                           questionVariables[index]['path'] = result['path'];
                           questionVariables[index]['answers'] = result['answers'];
+                          questionVariables[index]['answerText'] = result['answerText'];
                         });
                       }
                     },
@@ -102,7 +105,8 @@ class _QuestionListState extends State<QuestionList> {
                         'questionText': '...',
                         'type': false,
                         'path': null,
-                        'answers': [],
+                        'answers': null,
+                        'answerText': '...',
                       });
                     });
                   },
