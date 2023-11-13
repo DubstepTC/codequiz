@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:codequiz/widget/image.dart';
 import 'package:codequiz/widget/authorization/authorization_button.dart';
 import 'package:codequiz/widget/field.dart';
-import 'package:codequiz/widget/text_button.dart';
+import 'package:codequiz/widget/forget_password.dart';
 import 'package:flutter/services.dart';
 import 'package:supabase/supabase.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -56,7 +56,49 @@ class _FirstScreenState extends State<FirstScreen> {
           _passwordController.text == _repeatpasswordController.text;
     });
   }
-  
+
+  void createNewUser() async {
+    final checkResponse = await supabase
+      .from('Users')
+      .select()
+      .eq('email', _emailController.text)
+      .execute();
+
+    if (checkResponse.status != 200) {
+      Fluttertoast.showToast(
+        msg: "Ошибка при выполнении запроса",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 3,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      return;
+    } else if (checkResponse.data.isNotEmpty) {
+      Fluttertoast.showToast(
+        msg: "Почта уже используется",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 3,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }else {
+      // ignore: use_build_context_synchronously
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SecondScreen(
+            dataFromControllerOne: _emailController.text,
+            dataFromControllerTwo: _passwordController.text,
+          ), 
+        ),
+      );
+    }
+  }
+
   getUserIdByNickname(name) async {
     final response = await supabase
         .from('Users')
@@ -251,7 +293,7 @@ class _FirstScreenState extends State<FirstScreen> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  ButtonText(
+                                  FogetPassword(
                                     backgroundColor:
                                         const Color.fromRGBO(100, 124, 234, 0),
                                     colortxt: const Color.fromRGBO(
@@ -450,15 +492,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                     colortxt: Colors.white,
                                     height: 0.09,
                                     check: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                        builder: (context) => SecondScreen(
-                                          dataFromControllerOne: _emailController.text,
-                                          dataFromControllerTwo: _passwordController.text,
-                                        ), 
-                                        ),
-                                      );
+                                      createNewUser();
                                     },
                                     txt: "Далее",
                                     width: 0.8,

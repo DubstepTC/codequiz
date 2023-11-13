@@ -100,7 +100,7 @@ class _SecondScreenState extends State<SecondScreen> {
 
     return true;
   }
-
+  
   void createNewUser() async {
     final responseid = await supabase
     .from('Users')
