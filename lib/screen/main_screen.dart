@@ -28,9 +28,13 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    searchController = TextEditingController();
+    searchController.addListener(onSearchTextChanged);
     getUserRole(AppConstants.userID);
     getImageUrlById(AppConstants.userID);
+  }
+
+  void onSearchTextChanged() {
+    final searchText = searchController.text;
   }
 
    void didChangeDependencies() {
@@ -178,8 +182,8 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
             Expanded(
-              flex: 3,
-              child: HorizontalScrollWidget(height: 0.8, width: 0.75),
+              flex: 4,
+              child: HorizontalScrollWidget(height: 0.6, width: 0.9),
             ),
             const Expanded(
               flex: 1,
@@ -206,10 +210,10 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
             Expanded(
-              flex: 7,
+              flex: 8,
               child: VerticalScrollWidget(
-                height: 0.25,
-                width: 0.75,
+                height: 0.3,
+                width: 0.9,
                 searchText: searchText,
               ),
             ),

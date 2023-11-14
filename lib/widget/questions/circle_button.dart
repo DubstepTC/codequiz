@@ -1,3 +1,6 @@
+import 'package:codequiz/AppConstants/constants.dart';
+import 'package:codequiz/screen/questions/question_type_one.dart';
+import 'package:codequiz/screen/questions/result.dart';
 import 'package:flutter/material.dart';
 
 class CircleButton extends StatefulWidget {
@@ -18,6 +21,20 @@ class _CircleButtonState extends State<CircleButton> {
         setState(() {
           isActivated = !isActivated;
         });
+        if(AppConstants.numberScreenQuestion == AppConstants.numberOfQuestion - 1)
+        {
+          Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ResultScreen()),
+        );
+        }
+        else
+        {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => FirstOption()),
+        );
+        }
       },
       child: Container(
         width: screenWidth * 0.1,

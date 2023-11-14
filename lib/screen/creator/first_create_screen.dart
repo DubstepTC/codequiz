@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:codequiz/AppConstants/constants.dart';
 import 'package:codequiz/screen/creator/second_create_screen.dart';
 import 'package:codequiz/widget/button.dart';
@@ -21,9 +23,9 @@ class _FirstCreateScreenState extends State<FirstCreateScreen> {
 
   String? nickname;
 
-  String? _selectedImagePath = "";
+  File? _selectedImagePath;
 
-  void _onImageSelected(String imagePath) {
+  void _onImageSelected(File imagePath) {
     setState(() {
       _selectedImagePath = imagePath;
     });

@@ -9,22 +9,24 @@ import 'package:supabase/supabase.dart';
 import 'package:codequiz/widget/image.dart';
 import 'package:codequiz/widget/text_place.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class SecondCreateScreen extends StatefulWidget {
   final String nickname;
   final String testname;
   final String descriptive; 
-  final String? path;
+  final File? path;
 
-   List<Map<dynamic, dynamic>>? receivedData;
+  List<Map<dynamic, dynamic>>? receivedData;
 
-   SecondCreateScreen({super.key, 
+  SecondCreateScreen({super.key, 
       this.receivedData,
       required this.nickname,
       required this.descriptive,
       required this.testname,
       required this.path,
-    });
+  });
+
   @override
   _SecondCreateScreenState createState() => _SecondCreateScreenState();
 }
@@ -39,13 +41,14 @@ class _SecondCreateScreenState extends State<SecondCreateScreen> {
  // Создание теста в бд
 
  // Создание теста 
-  void createNewTests() async {
+  Future<void> createNewTests() async {
     final responseid = await supabase
     .from('Tests')
     .select()
     .execute();
     final count = responseid.data.length;
     final int newId = count + 1;
+    AppConstants.testID = newId;
 
     print("Создание теста");
     final response = await supabase.from('Tests').insert([
@@ -54,37 +57,163 @@ class _SecondCreateScreenState extends State<SecondCreateScreen> {
           'title': widget.testname,
           'description': widget.descriptive,
           'author_id': AppConstants.userID,
-          'logo_image_link': AppConstants.url,
+          'logo_image_link': AppConstants.urlTest,
         }
       ]).execute();
 
-      // ignore: use_build_context_synchronously
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MainScreen(),
-          ),
-        );
  }
   // Загрузка картинки теста
-  Future<void> saveImageToSupabase(File imageFile) async {
+  Future<void> saveImageTestToSupabase(File? imageFile) async {
       Random random = Random();
       String randomNumber = random.nextInt(100000000).toString().padLeft(9, '0');
       String img = "img $randomNumber";
 
+      if(imageFile != null){
       // ignore: unused_local_variable
       final response = await supabase.storage
           .from('images')
-          .upload('images/$img.jpg', imageFile);
+          .upload('images/$img.jpg', imageFile!);
 
       final imageUrl = supabase.storage
           .from('images')
           .getPublicUrl('images/$img.jpg');
-          AppConstants.url = imageUrl.characters.string;
-    }
+      AppConstants.urlTest = imageUrl.characters.string;
+      }
+      else
+      {
+        AppConstants.urlTest = AppConstants.urlStandartTest;
+      }
+  }
  // Запись вопросов теста в бд 
+
+ //вопрос
+  Future<void> createNewQuestion() async { 
+      final responseid = await supabase
+      .from('Tests_question')
+      .select()
+      .execute();
+      final count = responseid.data.length;
+      int newId = count + 1;
+
+      //Загрузка картинок теста и перезапись пути в url
+      for (int index = 0; index < widget.receivedData!.length; index++)
+      {
+        File? image = widget.receivedData![index]['path'];
+        dynamic urlQestion = await saveImageQestionOrAnswerToSupabase(image);
+        widget.receivedData![index]['path'] = urlQestion;
+      }
+
+      for (int index = 0; index < widget.receivedData!.length; index++, newId++){
+
+        print("Создание вопроса");
+        final response = await supabase.from('Tests_question').insert([
+            {
+              'id': newId,
+              'question_title': widget.receivedData![index]['questionText'],
+              'question_picture': widget.receivedData![index]['path'],
+              'type': widget.receivedData![index]['type'],
+              'test_id': AppConstants.testID,
+            }
+        ]).execute();
+
+        if(widget.receivedData![index]['type'] == false)
+        {
+          await createNewAnswers(widget.receivedData![index]['answers'], newId);
+        }
+        else
+        {
+          await createNewAnswer(newId, widget.receivedData![index]['answerText']);
+        }
+
+        //AppConstants.idQuestion?.add({'id': newId});
+      }
+      // ignore: use_build_context_synchronously
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MainScreen(),
+                          ),
+                        );  
+  }
+
+ //картинки вопроса  
+
+   Future<String> saveImageQestionOrAnswerToSupabase(File? imageFile) async {
+      Random random = Random();
+      String randomNumber = random.nextInt(100000000).toString().padLeft(9, '0');
+      String img = "img $randomNumber";
+      if(imageFile != null){
+        // ignore: unused_local_variable
+        final response = await supabase.storage
+            .from('images')
+            .upload('images/$img.jpg', imageFile!);
+
+        final imageUrl = supabase.storage
+            .from('images')
+            .getPublicUrl('images/$img.jpg');
+        return imageUrl.characters.string;
+      }
+      else
+      {
+        return "";
+      }
+  }
+
  // Запись ответов на тест в бд 
- // Запись связей ответов и вопросов в бд 
+
+  Future<void> createNewAnswers(List<Map<dynamic, dynamic>> savedData, int question_id) async { 
+      final responseid = await supabase
+      .from('Tests_answers')
+      .select()
+      .execute();
+      final count = responseid.data.length;
+      int newId = count + 1;
+
+      //Загрузка картинок теста и перезапись пути в url
+      for (int index = 0; index < savedData.length; index++)
+      {
+        File? image = savedData[index]['path'];
+        dynamic urlQestion = await saveImageQestionOrAnswerToSupabase(image);
+        savedData[index]['path'] = urlQestion;
+      }
+
+      for (int index = 0; index < savedData.length; index++, newId++){
+
+        print("Создание ответа");
+        final response = await supabase.from('Tests_answers').insert([
+            {
+              'id': newId,
+              'text_answer': savedData[index]['answerText'],
+              'is_correct_answer': savedData[index]['isBoolean'],
+              'picture_link': savedData[index]['path'],
+              'question_id': question_id,
+            }
+        ]).execute();
+      }
+  }
+
+  // Запись одного ответа на тест в бд 
+
+  Future<void> createNewAnswer(int question_id, String answer) async { 
+      final responseid = await supabase
+      .from('Tests_answers')
+      .select()
+      .execute();
+      final count = responseid.data.length;
+      int newId = count + 1;
+
+      print("Создание письменного ответа");
+      final response = await supabase.from('Tests_answers').insert([
+          {
+            'id': newId,
+            'text_answer': answer,
+            'is_correct_answer': true,
+            'picture_link': "",
+            'question_id': question_id,
+          }
+      ]).execute();
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -203,8 +332,26 @@ class _SecondCreateScreenState extends State<SecondCreateScreen> {
                       isEnabled: true, 
                       txt: "Создать тест", 
                       size: 16, 
-                      check: () {
-                        createNewTests();
+                      check: () async {
+
+                        if (widget.receivedData != null)
+                        {
+                        await saveImageTestToSupabase(widget.path);
+                        await createNewTests();
+                        await createNewQuestion();
+                        }
+                        else 
+                        {
+                          Fluttertoast.showToast(
+                            msg: "Нет вопросов в тесте",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 3,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0,
+                          );
+                        }
                       },
                       width: 0.4, 
                       height: 0.05, 

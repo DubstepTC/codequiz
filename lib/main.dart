@@ -21,7 +21,9 @@ class MyApp extends StatelessWidget{
   Widget build(BuildContext context){
 
     return MaterialApp(
-      home: FirstScreen(),
+      home: PopScope(
+        child: FirstScreen(),
+      ),
       debugShowCheckedModeBanner: false,
     );
 

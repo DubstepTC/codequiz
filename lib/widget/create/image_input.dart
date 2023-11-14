@@ -8,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 class ImageUploadWidget extends StatefulWidget {
   final double width;
   final double height;
-  final void Function(String)? onImageSelected;
+  final void Function(File)? onImageSelected;
 
   const ImageUploadWidget({super.key, 
     required this.height,
@@ -35,7 +35,7 @@ class _ImageUploadWidgetState extends State<ImageUploadWidget> {
         });
 
         if (widget.onImageSelected != null) {
-          widget.onImageSelected!(_imageFile!.path);
+          widget.onImageSelected!(_imageFile!);
         }
       }
     } catch (e) {

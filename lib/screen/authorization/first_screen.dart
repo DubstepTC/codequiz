@@ -1,6 +1,6 @@
 import 'package:codequiz/screen/authorization/second_screen.dart';
 import 'package:codequiz/screen/main_screen.dart'; 
-import 'package:codequiz/screen/questions/first_option.dart';
+import 'package:codequiz/screen/questions/question_type_one.dart';
 import 'package:codequiz/widget/authorization/reg_en_button.dart';
 import 'package:codequiz/widget/text_place.dart';
 import 'package:flutter/material.dart';

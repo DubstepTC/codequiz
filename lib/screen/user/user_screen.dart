@@ -1,3 +1,4 @@
+import 'package:codequiz/widget/user/vertical_test.dart';
 import 'package:flutter/material.dart';
 import 'package:codequiz/AppConstants/constants.dart';
 import 'package:codequiz/screen/creator/first_create_screen.dart';
@@ -174,8 +175,8 @@ class _UserScreenState extends State<UserScreen> {
             ?
             Expanded(
               flex: 6,
-              child: VerticalScrollWidget(
-                height: 0.1,
+              child: VerticalScrollWidgetUser(
+                height: 0.18,
                 width: 0.75,
                 searchText: "",
               ),
@@ -210,10 +211,10 @@ class _UserScreenState extends State<UserScreen> {
                 ),
                 Expanded(
                   flex: 5,
-                  child: VerticalScrollWidget(
-                    height: 0.1,
+                  child: VerticalScrollWidgetUser(
+                    height: 0.18,
                     width: 0.75,
-                    searchText: "",
+                    searchText: AppConstants.nickname,
                   ),
                 )
               ],

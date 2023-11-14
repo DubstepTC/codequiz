@@ -9,7 +9,7 @@ class TetstView extends StatelessWidget {
   final String name;
   final String nickname;
   final String descriptive;
-  final String? path;
+  final File? path;
 
   final List<List<Color>> gradientColors = [
     [const Color(0xFFDC717F), const Color(0xCDE1E3FF)], // Градиент 1
@@ -64,16 +64,16 @@ class TetstView extends StatelessWidget {
           const SizedBox(width: 8),
           Expanded(
            child: Container(
-              width: rectangleWidth / 4,
-              height: rectangleHeight * 0.8,
+              width: rectangleWidth / 3,
+              height: rectangleHeight * 0.9,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20.0),
                 color: Colors.transparent, // замените на нужный вам цвет
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20.0),
-                child: path != ""
-                  ? Image.file(File(path!), fit: BoxFit.cover,)
+                child: path != null
+                  ? Image.file(path!, fit: BoxFit.cover,)
                   : SvgPicture.asset('assets/images/test.svg'),
               ),
             ),
