@@ -6,7 +6,7 @@ class AnswerRowWidget extends StatelessWidget {
   final bool check;
   final String url;
 
-  AnswerRowWidget(this.answerText, this.check, this.url);
+  const AnswerRowWidget(this.answerText, this.check, this.url, {super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';class SwitchWidget extends StatefulWidget
   final bool isChecked;
   final ValueChanged<bool> onToggle; 
 
-  const SwitchWidget({
+  const SwitchWidget({super.key, 
     required this.width,
     required this.height,
     required this.isChecked,
@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';class SwitchWidget extends StatefulWidget
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _SwitchWidgetState createState() => _SwitchWidgetState();
 }
 
@@ -54,7 +55,7 @@ class _SwitchWidgetState extends State<SwitchWidget> {
             child: Text(
               _isSelected ? 'Вопрос без вариантов ответа' : 'Вопрос с вариантами ответа',
               textAlign: TextAlign.left,
-              style: TextStyle(fontSize: 20.0, color: const Color.fromRGBO(54, 79, 107, 100)),
+              style: const TextStyle(fontSize: 20.0, color: Color.fromRGBO(54, 79, 107, 100)),
             ),
           ),
         ],

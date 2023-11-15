@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 class QuestionList extends StatefulWidget {
   final Function(List<Map<dynamic, dynamic>>) onDataReceived;
 
-  const QuestionList({Key? key, required this.onDataReceived}) : super(key: key);
+  const QuestionList({super.key, required this.onDataReceived});
   
   @override
+  // ignore: library_private_types_in_public_api
   _QuestionListState createState() => _QuestionListState();
 }
 
@@ -22,7 +23,7 @@ class _QuestionListState extends State<QuestionList> {
   ];
 
   Future<void> refreshList() async {
-    await Future.delayed(Duration(milliseconds: 300));
+    await Future.delayed(const Duration(milliseconds: 300));
     setState(() {
       savedata = List.from(questionVariables);
       widget.onDataReceived(savedata);
@@ -63,27 +64,27 @@ class _QuestionListState extends State<QuestionList> {
                 },
                 background: Container(
                   color: Colors.red,
-                  child: Icon(Icons.delete, color: Colors.white, size: 40),
                   alignment: Alignment.centerRight,
-                  padding: EdgeInsets.only(right: 20.0),
+                  padding: const EdgeInsets.only(right: 20.0),
+                  child: const Icon(Icons.delete, color: Colors.white, size: 40),
                 ),
                 child: ListTile(
                   title: Row(
                     children: [
-                      Text('${index + 1}.', style: TextStyle(fontSize: 20)),
-                      SizedBox(width: 10),
+                      Text('${index + 1}.', style: const TextStyle(fontSize: 20)),
+                      const SizedBox(width: 10),
                       Expanded(
                         child: Center(
                           child: Text(
                             questionText,
-                            style: TextStyle(fontSize: 20),
+                            style: const TextStyle(fontSize: 20),
                           ),
                         ),
                       ),
                     ],
                   ),
                   trailing: IconButton(
-                    icon: Icon(Icons.edit),
+                    icon: const Icon(Icons.edit),
                     onPressed: () async {
                       var result = await Navigator.push(
                         context,

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class SearchWidget extends StatefulWidget {
+  const SearchWidget({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _SearchWidgetState createState() => _SearchWidgetState();
 }
 
@@ -28,7 +31,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                     decoration: InputDecoration(
                       labelText: "Search...",
                       suffixIcon: IconButton(
-                        icon: Icon(Icons.clear),
+                        icon: const Icon(Icons.clear),
                         onPressed: () {
                           setState(() {
                             searchController.clear();
@@ -39,7 +42,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                   ),
                 ),
               )
-            : Text("Your Text Here"),
+            : const Text("Your Text Here"),
         GestureDetector(
           onTap: startSearch,
           child: Image.asset(

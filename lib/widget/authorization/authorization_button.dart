@@ -6,13 +6,14 @@ class AuthorizationButton extends StatefulWidget {
   final bool isSelected;
   final Function(bool isSelected) onSelected;
 
-  AuthorizationButton({
+  const AuthorizationButton({super.key, 
     required this.text,
     required this.isSelected,
     required this.onSelected,
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _CustomButtonState createState() => _CustomButtonState();
 }
 

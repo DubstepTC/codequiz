@@ -11,7 +11,7 @@ class Pol extends StatefulWidget {
   final TextEditingController? controller;
 
   const Pol(
-      {required this.width,
+      {super.key, required this.width,
       this.controller,
       this.onChange,
       required this.labtext,
@@ -21,6 +21,7 @@ class Pol extends StatefulWidget {
       required this.hinttxt});
 
       @override
+  // ignore: library_private_types_in_public_api
   _PolState createState() => _PolState();
 }
 
@@ -61,7 +62,7 @@ class _PolState extends State<Pol>{
                 value: value,
                 child: Text(
                   value,
-                  style: TextStyle(color: Colors.black),
+                  style: const TextStyle(color: Colors.black),
                 ),
               );
             }).toList(),

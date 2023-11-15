@@ -12,7 +12,7 @@ class ButtonPush extends StatelessWidget {
 
  
 
-  const ButtonPush({ required this.isEnabled, required this.txt, required this.size, required this.page, required this.width, required this.height, required this.backgroundColor, required this.colortxt});
+  const ButtonPush({super.key,  required this.isEnabled, required this.txt, required this.size, required this.page, required this.width, required this.height, required this.backgroundColor, required this.colortxt});
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +33,7 @@ class ButtonPush extends StatelessWidget {
             builder: page, 
           ),
         );
-        }: null,
-        child: Text(txt, style: TextStyle(color: colortxt, fontSize: size)), // Текст на кнопке
+        }: null, // Текст на кнопке
           style:  ElevatedButton.styleFrom(
           minimumSize: Size(rectangleWidth, rectangleHeight),
           backgroundColor: backgroundColor,
@@ -42,6 +41,7 @@ class ButtonPush extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(60)),
           ),
        ),
+        child: Text(txt, style: TextStyle(color: colortxt, fontSize: size)),
     );
   }
 }

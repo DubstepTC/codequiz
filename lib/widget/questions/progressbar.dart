@@ -6,8 +6,8 @@ import 'package:percent_indicator/percent_indicator.dart';
 class TestProgressWidget extends StatelessWidget {
   final double progress;
 
-  TestProgressWidget(
-    this.progress,
+  const TestProgressWidget(
+    this.progress, {super.key}
   );
 
   @override
@@ -40,7 +40,7 @@ class TestProgressWidget extends StatelessWidget {
               Navigator.push(
                 context,
                 PageRouteBuilder(
-                  pageBuilder: (context, animation, secondaryAnimation) => MainScreen(),
+                  pageBuilder: (context, animation, secondaryAnimation) => const MainScreen(),
                   transitionsBuilder: (context, animation, secondaryAnimation, child) {
                     return FadeTransition(opacity: animation, child: child);
                   },

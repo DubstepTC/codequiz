@@ -29,7 +29,7 @@ class TetstView extends StatelessWidget {
   ];
 
   TetstView(
-      {required this.width,
+      {super.key, required this.width,
       required this.height,
       required this.name,
       required this.nickname,

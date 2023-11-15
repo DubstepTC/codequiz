@@ -5,8 +5,9 @@ class AnswerList extends StatefulWidget {
   final Function(List<Map<dynamic, dynamic>>) onDataReceived;
   final List<Map<dynamic, dynamic>>? answers;
 
-  const AnswerList({Key? key, required this.onDataReceived, required this.answers}) : super(key: key);
+  const AnswerList({super.key, required this.onDataReceived, required this.answers});
   @override
+  // ignore: library_private_types_in_public_api
   _AnswerListState createState() => _AnswerListState();
 }
 
@@ -33,7 +34,7 @@ class _AnswerListState extends State<AnswerList> {
   ];
 
   Future<void> refreshList() async {
-    await Future.delayed(Duration(milliseconds: 300));
+    await Future.delayed(const Duration(milliseconds: 300));
     setState(() {
       // Сохраняем данные в переменную savedData при обновлении списка
       savedData = List.from(answerVariables);
@@ -68,25 +69,25 @@ class _AnswerListState extends State<AnswerList> {
                   savedData = List.from(answerVariables);
                 });
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Ответ был удалён')),
+                  const SnackBar(content: Text('Ответ был удалён')),
                 );
               },
               background: Container(
                 color: Colors.red,
-                child: Icon(Icons.delete, color: Colors.white, size: 40),
                 alignment: Alignment.centerRight,
-                padding: EdgeInsets.only(right: 20.0),
+                padding: const EdgeInsets.only(right: 20.0),
+                child: const Icon(Icons.delete, color: Colors.white, size: 40),
               ),
               child: ListTile(
                 title: Row(
                   children: [
-                    Text('${index + 1}.', style: TextStyle(fontSize: 20)),
-                    SizedBox(width: 10),
+                    Text('${index + 1}.', style: const TextStyle(fontSize: 20)),
+                    const SizedBox(width: 10),
                     Expanded(
                       child: Center(
                         child: Text(
                           answerText,
-                          style: TextStyle(fontSize: 20),
+                          style: const TextStyle(fontSize: 20),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -94,7 +95,7 @@ class _AnswerListState extends State<AnswerList> {
                   ],
                 ),
                 trailing: IconButton(
-                  icon: Icon(Icons.edit),
+                  icon: const Icon(Icons.edit),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -125,9 +126,9 @@ class _AnswerListState extends State<AnswerList> {
             );
           } else {
             return ListTile(
-              title: Text('Добавить ответ'),
+              title: const Text('Добавить ответ'),
               trailing: IconButton(
-                icon: Icon(Icons.add),
+                icon: const Icon(Icons.add),
                 onPressed: () {
                   setState(() {
                     questions.add('...');

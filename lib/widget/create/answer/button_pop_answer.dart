@@ -15,7 +15,7 @@ class ButtonPopAnswer extends StatelessWidget {
   final bool check;
   final File? path;
 
-  const ButtonPopAnswer({ 
+  const ButtonPopAnswer({super.key,  
     required this.isEnabled, 
     required this.txt, 
     required this.size,
@@ -45,12 +45,8 @@ class ButtonPopAnswer extends StatelessWidget {
             'answerText': answerText,
             'isBoolean': check,
             'path': path,
-        });  
-        print(answerText);
-        print(check);
-        print(path);
-       }: null,
-        child: Text(txt, style: TextStyle(color: colortxt, fontSize: size)), // Текст на кнопке
+        });
+       }: null, // Текст на кнопке
           style:  ElevatedButton.styleFrom(
           minimumSize: Size(rectangleWidth, rectangleHeight),
           backgroundColor: backgroundColor,
@@ -58,6 +54,7 @@ class ButtonPopAnswer extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(60)),
           ),
        ),
+        child: Text(txt, style: TextStyle(color: colortxt, fontSize: size)),
     );
   }
 }

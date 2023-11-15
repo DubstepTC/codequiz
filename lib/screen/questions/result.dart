@@ -1,8 +1,6 @@
 import 'package:codequiz/AppConstants/constants.dart';
 import 'package:codequiz/screen/main_screen.dart';
 import 'package:codequiz/widget/authorization/reg_en_button.dart';
-import 'package:codequiz/widget/button.dart';
-import 'package:codequiz/widget/questions/answer.dart';
 import 'package:codequiz/widget/questions/end_of_the_test.dart';
 import 'package:codequiz/widget/questions/progressbar.dart';
 import 'package:codequiz/widget/text_place.dart';
@@ -24,6 +22,7 @@ class ResultScreen extends StatelessWidget {
 
   ResultScreen({super.key});
 
+  // ignore: unused_element
   List<Widget> _buildSectionWidgets() {
     return List<Widget>.generate(20, (index) {
       final sectionColor = _sectionColors[index];
@@ -46,11 +45,11 @@ class ResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
     _sectionColors = List<Color>.generate(20, (index) => _getSectionColor(index));
 
+    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
         // Предотвращаем возврат на предыдущий экран
@@ -116,7 +115,7 @@ class ResultScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         PageRouteBuilder(
-                          pageBuilder: (context, animation, secondaryAnimation) => MainScreen(),
+                          pageBuilder: (context, animation, secondaryAnimation) => const MainScreen(),
                           transitionsBuilder: (context, animation, secondaryAnimation, child) {
                             return FadeTransition(opacity: animation, child: child);
                           },

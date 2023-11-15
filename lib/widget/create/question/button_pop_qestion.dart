@@ -17,7 +17,7 @@ class ButtonPopQestion extends StatelessWidget {
   final String answerText;
   final File? path;
 
-  const ButtonPopQestion({ 
+  const ButtonPopQestion({super.key,  
     required this.isEnabled, 
     required this.txt, 
     required this.size,
@@ -52,8 +52,7 @@ class ButtonPopQestion extends StatelessWidget {
             'answers': answers,
             'answerText': answerText,
         });
-       }: null,
-        child: Text(txt, style: TextStyle(color: colortxt, fontSize: size)), // Текст на кнопке
+       }: null, // Текст на кнопке
           style:  ElevatedButton.styleFrom(
           minimumSize: Size(rectangleWidth, rectangleHeight),
           backgroundColor: backgroundColor,
@@ -61,6 +60,7 @@ class ButtonPopQestion extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(60)),
           ),
        ),
+        child: Text(txt, style: TextStyle(color: colortxt, fontSize: size)),
     );
   }
 }

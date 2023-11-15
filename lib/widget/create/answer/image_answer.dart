@@ -11,12 +11,12 @@ class ImageUploadWidgetAnswer extends StatefulWidget {
   final File? path;
   final void Function(File)? onImageSelected;
 
-  const ImageUploadWidgetAnswer({Key? key, 
+  const ImageUploadWidgetAnswer({super.key, 
     required this.height,
     required this.width,
     this.path,
     this.onImageSelected,
-  }): super(key: key);
+  });
 
   @override
   // ignore: library_private_types_in_public_api
@@ -83,7 +83,7 @@ class _ImageUploadWidgetStateAnswer extends State<ImageUploadWidgetAnswer> {
             borderRadius: BorderRadius.all(Radius.circular(20)),
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
+            borderRadius: const BorderRadius.all(Radius.circular(20)),
             child: GestureDetector(
               onTap: _pickImage,
               child: _imageFile != null

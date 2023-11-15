@@ -5,7 +5,7 @@ class ImageUrl extends StatelessWidget {
   final double width;
   final double height; 
 
-  const ImageUrl({required this.width, required this.height, required this.picture});
+  const ImageUrl({super.key, required this.width, required this.height, required this.picture});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class ImageUrl extends StatelessWidget {
 
   
     return ClipOval(
-      child: Container(
+      child: SizedBox(
         width: rectangleWidth,
         height: rectangleHeight - 2,
         child: Image.network(picture, fit: BoxFit.cover),

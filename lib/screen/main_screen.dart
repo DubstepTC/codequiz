@@ -1,5 +1,6 @@
 import 'package:codequiz/widget/url_image.dart';
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:supabase/supabase.dart';
 import 'package:codequiz/screen/user/user_screen.dart';
 import 'package:codequiz/widget/field.dart';
@@ -10,7 +11,10 @@ import 'package:codequiz/widget/text_place.dart';
 import 'package:codequiz/AppConstants/constants.dart';
 
 class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _MainScreenState createState() => _MainScreenState();
 }
 
@@ -34,10 +38,12 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void onSearchTextChanged() {
+    // ignore: unused_local_variable
     final searchText = searchController.text;
   }
 
-   void didChangeDependencies() {
+   @override
+     void didChangeDependencies() {
     super.didChangeDependencies();
     if (ModalRoute.of(context)!.isCurrent) {
       getUserRole(AppConstants.userID);
@@ -50,6 +56,7 @@ class _MainScreenState extends State<MainScreen> {
         .from('Users')
         .select('role')
         .eq('id', id)
+        // ignore: deprecated_member_use
         .execute();
 
     if (response.status == 200 && response.data.length > 0) {
@@ -57,6 +64,7 @@ class _MainScreenState extends State<MainScreen> {
         AppConstants.userRole = response.data[0]['role'];
       });
     } else {
+      // ignore: avoid_print
       print('Error fetching user role');
     }
   }
@@ -67,6 +75,7 @@ class _MainScreenState extends State<MainScreen> {
         .select('image')
         .eq('id', userId)
         .single()
+        // ignore: deprecated_member_use
         .execute();
 
     if (response.status == 200) {
@@ -77,6 +86,7 @@ class _MainScreenState extends State<MainScreen> {
         AppConstants.url = "";
       }
     } else {
+      // ignore: avoid_print
       print('Error fetching user image');
     }
   }
@@ -158,19 +168,22 @@ class _MainScreenState extends State<MainScreen> {
                         onTap: () async {
 
                           String withoutDuplicates = AppConstants.activity.split(',').toSet().join(', ');
+                          // ignore: avoid_print
                           print(withoutDuplicates);
 
+                          // ignore: unused_local_variable
                           final response = await supabase
                             .from('Users')
                             .update({'activity': AppConstants.activity})
                             .eq('id', AppConstants.userID)
+                            // ignore: deprecated_member_use
                             .execute();
 
                           // ignore: use_build_context_synchronously
                           Navigator.push(
                             context,
                              PageRouteBuilder(
-                              pageBuilder: (context, animation, secondaryAnimation) => UserScreen(),
+                              pageBuilder: (context, animation, secondaryAnimation) => const UserScreen(),
                               transitionsBuilder: (context, animation, secondaryAnimation, child) {
                                 return FadeTransition(opacity: animation, child: child);
                               },

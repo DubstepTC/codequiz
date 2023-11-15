@@ -5,10 +5,11 @@ class AnimatedArcWidget extends StatefulWidget {
   final int correctAnswers;
   final int totalQuestions;
 
-  AnimatedArcWidget(
-      {required this.correctAnswers, required this.totalQuestions});
+  const AnimatedArcWidget(
+      {super.key, required this.correctAnswers, required this.totalQuestions});
 
   @override
+  // ignore: library_private_types_in_public_api
   _AnimatedArcWidgetState createState() => _AnimatedArcWidgetState();
 }
 
@@ -23,7 +24,7 @@ class _AnimatedArcWidgetState extends State<AnimatedArcWidget>
     double percentageFilled =
         (widget.correctAnswers / widget.totalQuestions) * 100;
     _controller = AnimationController(
-      duration: Duration(seconds: 2), // Время анимации
+      duration: const Duration(seconds: 2), // Время анимации
       vsync: this,
     );
     _animation = Tween(begin: 0.0, end: percentageFilled).animate(_controller)

@@ -14,9 +14,9 @@ class CircleImageWidget extends StatefulWidget {
   final double height;
   final Function()? onImageChanged;
 
-  const CircleImageWidget({required this.width, required this.height, this.onImageChanged, Key? key})
-      : super(key: key);
+  const CircleImageWidget({required this.width, required this.height, this.onImageChanged, super.key});
   @override
+  // ignore: library_private_types_in_public_api
   _CircleImageWidgetState createState() => _CircleImageWidgetState();
 }
 
@@ -25,6 +25,7 @@ class _CircleImageWidgetState extends State<CircleImageWidget> {
   File? _image;
   late String _savedImagePath;
   final String _defaultImagePath = 'assets/images/avatar.svg'; // Path to the default image
+  // ignore: non_constant_identifier_names
   bool Check = false;
 
   final supabase = SupabaseClient(
@@ -81,6 +82,7 @@ class _CircleImageWidgetState extends State<CircleImageWidget> {
         .from('Users')
         .update({'image': imageUrl})
         .eq('id', userId)
+        // ignore: deprecated_member_use
         .execute();
 
     if (response.status == 200) {

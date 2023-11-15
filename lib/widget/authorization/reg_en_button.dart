@@ -12,7 +12,7 @@ class ButtonEntry extends StatelessWidget {
 
  
 
-  const ButtonEntry({ required this.isEnabled, required this.txt, required this.size, required this.check, required this.width, required this.height, required this.backgroundColor, required this.colortxt});
+  const ButtonEntry({super.key,  required this.isEnabled, required this.txt, required this.size, required this.check, required this.width, required this.height, required this.backgroundColor, required this.colortxt});
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +28,7 @@ class ButtonEntry extends StatelessWidget {
     return ElevatedButton(
         onPressed: isEnabled ?() {
          check?.call();
-        }: null,
-        child: Text(txt, style: TextStyle(color: colortxt, fontSize: size)), // Текст на кнопке
+        }: null, // Текст на кнопке
           style:  ElevatedButton.styleFrom(
           minimumSize: Size(rectangleWidth, rectangleHeight),
           backgroundColor: backgroundColor,
@@ -37,6 +36,7 @@ class ButtonEntry extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(60)),
           ),
        ),
+        child: Text(txt, style: TextStyle(color: colortxt, fontSize: size)),
     );
   }
 }

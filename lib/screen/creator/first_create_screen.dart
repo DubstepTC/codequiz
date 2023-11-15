@@ -5,14 +5,19 @@ import 'package:codequiz/screen/creator/second_create_screen.dart';
 import 'package:codequiz/widget/button.dart';
 import 'package:codequiz/widget/create/image_input.dart';
 import 'package:codequiz/widget/create/text_input.dart';
+// ignore: depend_on_referenced_packages
 import 'package:supabase/supabase.dart';
 import 'package:codequiz/widget/image.dart';
 import 'package:codequiz/widget/text_place.dart';
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:fluttertoast/fluttertoast.dart';
 
 class FirstCreateScreen extends StatefulWidget {
+  const FirstCreateScreen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _FirstCreateScreenState createState() => _FirstCreateScreenState();
 }
 
@@ -29,7 +34,6 @@ class _FirstCreateScreenState extends State<FirstCreateScreen> {
     setState(() {
       _selectedImagePath = imagePath;
     });
-    print('Выбрано изображение: $_selectedImagePath');
   }
 
   @override
@@ -38,6 +42,7 @@ class _FirstCreateScreenState extends State<FirstCreateScreen> {
     getNicknameById(AppConstants.userID);
   }
 
+  @override
   void dispose() {
     _testController.dispose();
     _opController.dispose();
@@ -62,6 +67,7 @@ class _FirstCreateScreenState extends State<FirstCreateScreen> {
         .select('nickname')
         .eq('id', userId)
         .single()
+        // ignore: deprecated_member_use
         .execute();
 
     if (response.status != 200) {
@@ -100,8 +106,8 @@ class _FirstCreateScreenState extends State<FirstCreateScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       IconButton(
-                        icon: Icon(Icons.arrow_back),
-                        color: Color.fromRGBO(220, 113, 127, 1),
+                        icon: const Icon(Icons.arrow_back),
+                        color: const Color.fromRGBO(220, 113, 127, 1),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },

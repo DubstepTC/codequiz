@@ -6,7 +6,6 @@ import 'package:codequiz/AppConstants/constants.dart';
 import 'package:codequiz/screen/creator/first_create_screen.dart';
 import 'package:codequiz/screen/user/settings.dart';
 import 'package:codequiz/widget/authorization/reg_en_button.dart';
-import 'package:codequiz/widget/main/vertical_bar.dart';
 import 'package:codequiz/widget/text_place.dart';
 import 'package:codequiz/widget/user/nick.dart';
 import 'package:codequiz/widget/user/profile_picture.dart';
@@ -14,7 +13,10 @@ import 'package:codequiz/widget/user/user_button.dart';
 import 'package:codequiz/widget/image.dart';
 
 class UserScreen extends StatefulWidget {
+  const UserScreen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _UserScreenState createState() => _UserScreenState();
 }
 
@@ -42,20 +44,20 @@ class _UserScreenState extends State<UserScreen> {
               child: Container(
                 alignment: Alignment.topCenter,
                 child: Container(
-                  decoration: BoxDecoration(color: Colors.white),
+                  decoration: const BoxDecoration(color: Colors.white),
                   child: 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       IconButton(
-                        icon: Icon(Icons.arrow_back),
-                        color: Color.fromRGBO(220, 113, 127, 1),
+                        icon: const Icon(Icons.arrow_back),
+                        color: const Color.fromRGBO(220, 113, 127, 1),
                         onPressed: () {
                           Navigator.push(
                               context,
                               PageRouteBuilder(
-                              pageBuilder: (context, animation, secondaryAnimation) => MainScreen(),
+                              pageBuilder: (context, animation, secondaryAnimation) => const MainScreen(),
                               transitionsBuilder: (context, animation, secondaryAnimation, child) {
                                 return FadeTransition(opacity: animation, child: child);
                               },
@@ -212,7 +214,7 @@ class _UserScreenState extends State<UserScreen> {
                         check: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => FirstCreateScreen()), // замените YourNextPage на ваш класс следующей страницы
+                            MaterialPageRoute(builder: (context) => const FirstCreateScreen()), // замените YourNextPage на ваш класс следующей страницы
                           );
                         },
                       )

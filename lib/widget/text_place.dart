@@ -11,7 +11,7 @@ class TextPlace extends StatelessWidget {
   final TextAlign align;
   final String font;
 
-  const TextPlace({required this.txt,required this.font, required this.align, required this.st, required this.width, required this.height, required this.backgroundColor, required this.colortxt, required this.size,});
+  const TextPlace({super.key, required this.txt,required this.font, required this.align, required this.st, required this.width, required this.height, required this.backgroundColor, required this.colortxt, required this.size,});
 
   @override
   Widget build(BuildContext context) {

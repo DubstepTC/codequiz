@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mailer/smtp_server.dart';
+// ignore: depend_on_referenced_packages
 import 'package:supabase/supabase.dart';
 import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server/gmail.dart';
 
 class FogetPassword extends StatefulWidget {
   final String txt;
@@ -13,8 +14,10 @@ class FogetPassword extends StatefulWidget {
   final Color colortxt;
   final Widget Function(BuildContext) page;
 
-  FogetPassword({super.key, required this.page,required this.txt, required this.width, required this.height, required this.backgroundColor, required this.colortxt});
+  const FogetPassword({super.key, required this.page,required this.txt, required this.width, required this.height, required this.backgroundColor, required this.colortxt});
   
+  @override
+  // ignore: library_private_types_in_public_api
   _FogetPasswordState createState() => _FogetPasswordState();
   
 }
@@ -37,6 +40,7 @@ final supabase = SupabaseClient(
         .select('password')
         .eq('email', _emailController.text) 
         .single()
+        // ignore: deprecated_member_use
         .execute();
 
       password = response.data['password'] as String;
@@ -70,6 +74,7 @@ final supabase = SupabaseClient(
         .select('nickname')
         .eq('email', _emailController.text) 
         .single()
+        // ignore: deprecated_member_use
         .execute();
 
     nickname = response.data['nickname'] as String;
@@ -92,9 +97,12 @@ final supabase = SupabaseClient(
     ..text = '- ˕ •マ\nВаш ник: $nickname\n- ˕ •マ\nВаш пароль: $passwordUser\n\n ╱|、\n(˚ˎ 。7\n|、˜〵\nじしˍ,)ノ'; // Текст письма
 
   try {
+    // ignore: unused_local_variable
     final sendReport = await send(message, smtpServer);
+    // ignore: avoid_print
     print('Письмо отправлено');
   } on MailerException {
+    // ignore: avoid_print
     print('Письмо не отправлено');
   }
 }
@@ -127,6 +135,7 @@ final supabase = SupabaseClient(
                       onPressed: () async {
                         await getUserPasswordByEmail();
                         // В этом месте ты можешь обработать введенную почту
+                        // ignore: use_build_context_synchronously
                         Navigator.of(context).pop();
                       },
                     ),
@@ -137,7 +146,6 @@ final supabase = SupabaseClient(
           },
         );
       },
-      child: Text(widget.txt, textAlign: TextAlign.left, style: TextStyle(color: widget.colortxt),),
       style: TextButton.styleFrom(
         minimumSize: Size(rectangleWidth, rectangleHeight),
         backgroundColor: widget.backgroundColor,
@@ -146,6 +154,7 @@ final supabase = SupabaseClient(
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
       ),
+      child: Text(widget.txt, textAlign: TextAlign.left, style: TextStyle(color: widget.colortxt),),
     );
   }
 }

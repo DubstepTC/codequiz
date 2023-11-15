@@ -1,12 +1,14 @@
 import 'package:codequiz/AppConstants/constants.dart';
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:supabase/supabase.dart';
+// ignore: depend_on_referenced_packages
 import 'package:fluttertoast/fluttertoast.dart';
 
 class NicknameWidget extends StatelessWidget {
   final void Function(String)? onEditPressed;
 
-  NicknameWidget({
+  NicknameWidget({super.key, 
     required this.onEditPressed,
   });
 
@@ -21,6 +23,7 @@ class NicknameWidget extends StatelessWidget {
       .select('nickname')
       .eq('id', userId)
       .single()
+      // ignore: deprecated_member_use
       .execute();
 
     if (response.status != 200) {
@@ -44,6 +47,7 @@ class NicknameWidget extends StatelessWidget {
         .from('Users')
         .update({'nickname': newNickname})
         .eq('id', userId)
+        // ignore: deprecated_member_use
         .execute();
 
     if (response.status == 200) {
@@ -74,12 +78,12 @@ class NicknameWidget extends StatelessWidget {
       future: getNicknameById(AppConstants.userID),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
-          return Text('Ошибка получения никнейма');
+          return const Text('Ошибка получения никнейма');
         } else {
           String nickname = snapshot.data ?? "";
-          final TextEditingController _editController =
+          final TextEditingController editController =
               TextEditingController(text: nickname);
 
           return Row(
@@ -102,7 +106,7 @@ class NicknameWidget extends StatelessWidget {
                       return AlertDialog(
                         title: const Text('Изменить никнейм'),
                         content: TextField(
-                          controller: _editController,
+                          controller: editController,
                           textAlign: TextAlign.left,
                         ),
                         actions: [
@@ -118,9 +122,9 @@ class NicknameWidget extends StatelessWidget {
                           const SizedBox(width: 24),
                           TextButton(
                             onPressed: () {
-                              updateNicknameById(AppConstants.userID, _editController.text);
+                              updateNicknameById(AppConstants.userID, editController.text);
                               Navigator.of(context).pop();
-                              onEditPressed?.call(_editController.text);
+                              onEditPressed?.call(editController.text);
                             },
                             child: const Text(
                               'Сохранить',

@@ -76,7 +76,7 @@ class _ImageUploadWidgetState extends State<ImageUploadWidget> {
             borderRadius: BorderRadius.all(Radius.circular(20)),
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
+            borderRadius: const BorderRadius.all(Radius.circular(20)),
             child: GestureDetector(
               onTap: _pickImage,
               child: _imageFile != null

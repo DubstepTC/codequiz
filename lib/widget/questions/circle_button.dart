@@ -3,11 +3,13 @@ import 'package:codequiz/screen/questions/question_type_one.dart';
 import 'package:codequiz/screen/questions/result.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class CircleButton extends StatefulWidget {
   bool check;
 
   CircleButton(this.check, {super.key});
   @override
+  // ignore: library_private_types_in_public_api
   _CircleButtonState createState() => _CircleButtonState();
 }
 
@@ -45,7 +47,7 @@ class _CircleButtonState extends State<CircleButton> {
         Navigator.push(
           context,
           PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) => FirstOption(),
+            pageBuilder: (context, animation, secondaryAnimation) => const FirstOption(),
             transitionsBuilder: (context, animation, secondaryAnimation, child) {
               return FadeTransition(opacity: animation, child: child);
             },

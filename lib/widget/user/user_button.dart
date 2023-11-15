@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:supabase/supabase.dart';
 
 
@@ -14,7 +15,7 @@ class UserButton extends StatefulWidget {
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml0Y3N3bXNsaHRhZ2themtqdWl0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTgyMzY3NzYsImV4cCI6MjAxMzgxMjc3Nn0.Lj0GiKJXMkN2ixwCARaOVrenlvlPSppueBtOks7VR8s",
   );
 
-  UserButton({
+  UserButton({super.key, 
     required this.text,
     required this.isSelected,
     required this.onSelected,
@@ -23,6 +24,7 @@ class UserButton extends StatefulWidget {
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _CustomButtonState createState() => _CustomButtonState();
 }
 

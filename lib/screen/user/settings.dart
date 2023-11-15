@@ -5,7 +5,9 @@ import 'package:codequiz/widget/image.dart';
 import 'package:flutter/material.dart';
 import 'package:codequiz/widget/field.dart';
 import 'package:codequiz/widget/text_place.dart';
+// ignore: depend_on_referenced_packages
 import 'package:supabase/supabase.dart';
+// ignore: depend_on_referenced_packages
 import 'package:fluttertoast/fluttertoast.dart';
 
 // ignore: must_be_immutable
@@ -13,6 +15,7 @@ class SettingsScreen extends StatefulWidget {
   SettingsScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _SeettingsScreenState createState() => _SeettingsScreenState();
   int data = 0;
 }
@@ -65,6 +68,7 @@ class _SeettingsScreenState extends State<SettingsScreen> {
       }
     ],
   )
+  // ignore: deprecated_member_use
   .execute();
 
     if (response.status == 200) {
@@ -102,6 +106,7 @@ class _SeettingsScreenState extends State<SettingsScreen> {
     .from('Users')
     .select()
     .eq('id', AppConstants.userID)
+    // ignore: deprecated_member_use
     .execute();
 
     if (response.status != 200) {
@@ -127,7 +132,6 @@ class _SeettingsScreenState extends State<SettingsScreen> {
       );
 
       final data = response.data;
-      print(data);
       if (data.length > 0) {
         final user = data[0];
         _firstNameController.text = user['first_name'] ?? '';
@@ -161,13 +165,13 @@ class _SeettingsScreenState extends State<SettingsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       IconButton(
-                        icon: Icon(Icons.arrow_back),
-                        color: Color.fromRGBO(220, 113, 127, 1),
+                        icon: const Icon(Icons.arrow_back),
+                        color: const Color.fromRGBO(220, 113, 127, 1),
                         onPressed: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                              builder: (context) => UserScreen(), 
+                              builder: (context) => const UserScreen(), 
                               ),
                           );
                         },

@@ -56,8 +56,8 @@ class _AnswerSettingsFirstState extends State<AnswerSettingsFirst> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         IconButton(
-                          icon: Icon(Icons.arrow_back),
-                          color: Color.fromRGBO(220, 113, 127, 1),
+                          icon: const Icon(Icons.arrow_back),
+                          color: const Color.fromRGBO(220, 113, 127, 1),
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
@@ -98,7 +98,7 @@ class _AnswerSettingsFirstState extends State<AnswerSettingsFirst> {
                               width: 0.9,
                               height: 0.05,
                               backgroundColor: Colors.transparent,
-                              colortxt: const Color.fromRGBO(54, 79, 107, 100),
+                              colortxt: Color.fromRGBO(54, 79, 107, 100),
                               size: 20,
                             ),
                           ],
@@ -134,7 +134,7 @@ class _AnswerSettingsFirstState extends State<AnswerSettingsFirst> {
                               width: 0.9,
                               height: 0.05,
                               backgroundColor: Colors.transparent,
-                              colortxt: const Color.fromRGBO(54, 79, 107, 100),
+                              colortxt: Color.fromRGBO(54, 79, 107, 100),
                               size: 20,
                             ),
                           ],

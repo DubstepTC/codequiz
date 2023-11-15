@@ -12,7 +12,7 @@ class TextInput extends StatelessWidget {
   final TextEditingController? controller;
 
   const TextInput(
-      {required this.width,
+      {super.key, required this.width,
       this.controller,
       this.onChange,
       required this.quantity,
@@ -54,7 +54,7 @@ class TextInput extends StatelessWidget {
             hintText: hinttxt,
             hintStyle: TextStyle(color: colortxt),
           ),
-          style: TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.black),
           textAlign: TextAlign.left,
           obscureText: mode,
         ),

@@ -20,6 +20,7 @@ class QuestionSettingsFirst extends StatefulWidget {
   QuestionSettingsFirst({super.key, required this.path, required this.answerText, this.receivedData, required this.questionText, required this.type, required this.answers});
 
   @override
+  // ignore: library_private_types_in_public_api
   _QuestionSettingsFirstState createState() => _QuestionSettingsFirstState();
 }
 
@@ -44,7 +45,8 @@ class _QuestionSettingsFirstState extends State<QuestionSettingsFirst> {
     }
   }
 
- void dispose() {
+ @override
+  void dispose() {
     _questionController.dispose();
     super.dispose();
   }
@@ -66,8 +68,8 @@ class _QuestionSettingsFirstState extends State<QuestionSettingsFirst> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         IconButton(
-                          icon: Icon(Icons.arrow_back),
-                          color: Color.fromRGBO(220, 113, 127, 1),
+                          icon: const Icon(Icons.arrow_back),
+                          color: const Color.fromRGBO(220, 113, 127, 1),
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
@@ -108,7 +110,7 @@ class _QuestionSettingsFirstState extends State<QuestionSettingsFirst> {
                               width: 0.9,
                               height: 0.05,
                               backgroundColor: Colors.transparent,
-                              colortxt: const Color.fromRGBO(54, 79, 107, 100),
+                              colortxt: Color.fromRGBO(54, 79, 107, 100),
                               size: 20,
                             ),
                           ],
@@ -144,7 +146,7 @@ class _QuestionSettingsFirstState extends State<QuestionSettingsFirst> {
                               width: 0.9,
                               height: 0.05,
                               backgroundColor: Colors.transparent,
-                              colortxt: const Color.fromRGBO(54, 79, 107, 100),
+                              colortxt: Color.fromRGBO(54, 79, 107, 100),
                               size: 20,
                             ),
                           ],
@@ -170,7 +172,7 @@ class _QuestionSettingsFirstState extends State<QuestionSettingsFirst> {
                               width: 0.9,
                               height: 0.05,
                               backgroundColor: Colors.transparent,
-                              colortxt: const Color.fromRGBO(54, 79, 107, 100),
+                              colortxt: Color.fromRGBO(54, 79, 107, 100),
                               size: 20,
                             ),
                           ],
@@ -226,7 +228,7 @@ class _QuestionSettingsFirstState extends State<QuestionSettingsFirst> {
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 50,)
+                                const SizedBox(height: 50,)
                               ])
                             : Column(children: [
                                 const Row(

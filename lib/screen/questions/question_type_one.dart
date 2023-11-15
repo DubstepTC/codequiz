@@ -9,6 +9,10 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class FirstOption extends StatefulWidget {
+  const FirstOption({super.key});
+
+  @override
+  // ignore: library_private_types_in_public_api
   _FirstOptionState createState() => _FirstOptionState();
 }
 
@@ -17,10 +21,10 @@ class _FirstOptionState extends State<FirstOption> {
 
   @override
   Widget build(BuildContext context) {
-    print(AppConstants.numberScreenQuestion);
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
+    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
         // Предотвращаем возврат на предыдущий экран
@@ -165,7 +169,6 @@ class _FirstOptionState extends State<FirstOption> {
                         if (_answerController.text ==
                             AppConstants.answersList[AppConstants
                                 .numberScreenQuestion][0]['text_answer']) {
-                          print("ответил");
                           AppConstants.correctAnswer += 1;
                         }
                         if (AppConstants.numberScreenQuestion ==
@@ -191,7 +194,7 @@ class _FirstOptionState extends State<FirstOption> {
                             PageRouteBuilder(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
-                                      FirstOption(),
+                                      const FirstOption(),
                               transitionsBuilder: (context, animation,
                                   secondaryAnimation, child) {
                                 return FadeTransition(

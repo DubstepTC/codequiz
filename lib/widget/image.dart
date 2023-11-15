@@ -6,7 +6,7 @@ class ImageMain extends StatelessWidget {
   final double width;
   final double height; 
 
-  const ImageMain({required this.width, required this.height, required this.picture});
+  const ImageMain({super.key, required this.width, required this.height, required this.picture});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class ImageMain extends StatelessWidget {
     double rectangleHeight = screenHeight * height;
 
   
-    return Container(
+    return SizedBox(
       width: rectangleWidth,
       height: rectangleHeight - 2,
       child: SvgPicture.asset(picture, fit: BoxFit.cover),

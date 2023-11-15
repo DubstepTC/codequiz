@@ -306,7 +306,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                     colortxt: const Color.fromRGBO(
                                         220, 113, 127, 100),
                                     height: 0.05,
-                                    page: (context) => FirstOption(),
+                                    page: (context) => const FirstOption(),
                                     txt: "Забыли пароль?",
                                     width: 0.2,
                                   ),
@@ -372,7 +372,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                             Navigator.push(
                                               context,
                                               PageRouteBuilder(
-                                                pageBuilder: (context, animation, secondaryAnimation) => MainScreen(),
+                                                pageBuilder: (context, animation, secondaryAnimation) => const MainScreen(),
                                                 transitionsBuilder: (context, animation, secondaryAnimation, child) {
                                                   return FadeTransition(opacity: animation, child: child);
                                                 },

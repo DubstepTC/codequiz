@@ -1,10 +1,10 @@
 import 'package:codequiz/AppConstants/constants.dart';
 import 'package:codequiz/screen/questions/question_type_one.dart';
-import 'package:codequiz/screen/questions/result.dart';
-import 'package:codequiz/screen/user/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+// ignore: depend_on_referenced_packages
 import 'package:supabase/supabase.dart';
+// ignore: depend_on_referenced_packages
 import 'package:fluttertoast/fluttertoast.dart';
 
 class HorizontalScrollWidget extends StatefulWidget {
@@ -12,7 +12,7 @@ class HorizontalScrollWidget extends StatefulWidget {
   final double height;
   final List<List<Color>> gradientColors = [
     [
-      Color.fromARGB(255, 211, 130, 196),
+      const Color.fromARGB(255, 211, 130, 196),
       const Color.fromARGB(197, 239, 246, 229)
     ],
     [
@@ -20,7 +20,7 @@ class HorizontalScrollWidget extends StatefulWidget {
       const Color.fromARGB(197, 239, 246, 229)
     ],
     [
-      Color.fromARGB(255, 127, 153, 220),
+      const Color.fromARGB(255, 127, 153, 220),
       const Color.fromARGB(197, 241, 223, 250)
     ], 
     [
@@ -39,7 +39,9 @@ class HorizontalScrollWidget extends StatefulWidget {
     
   ];
 
-  HorizontalScrollWidget({required this.width, required this.height});
+  HorizontalScrollWidget({super.key, required this.width, required this.height});
+  @override
+  // ignore: library_private_types_in_public_api
   _HorizontalScrollWidgetState createState() => _HorizontalScrollWidgetState();
 }
 
@@ -61,13 +63,14 @@ class HorizontalScrollWidget extends StatefulWidget {
 
   //Запрос на id теста 
   getTestId(testName, nickname) async {
-    int author_id = 0;
+    int authorId = 0;
     
     final response = await supabase
         .from('Users')
         .select('id')
         .eq('nickname', nickname) 
         .single()
+        // ignore: deprecated_member_use
         .execute();
 
     if (response.status != 200) {
@@ -82,7 +85,7 @@ class HorizontalScrollWidget extends StatefulWidget {
     } 
     else 
     {
-      author_id = response.data['id'] as int;
+      authorId = response.data['id'] as int;
     }
   
 
@@ -90,10 +93,12 @@ class HorizontalScrollWidget extends StatefulWidget {
         .from('Tests')
         .select('id')
         .eq('title', testName) 
-        .eq('author_id', author_id)
+        .eq('author_id', authorId)
         .single()
+        // ignore: deprecated_member_use
         .execute();
      AppConstants.activity =  "${AppConstants.activity},${respons.data['id']}";
+     // ignore: avoid_print
      print(AppConstants.activity);
 
     await setupNumberOfQuestion(respons.data['id']);
@@ -105,17 +110,14 @@ class HorizontalScrollWidget extends StatefulWidget {
       .from('Tests_question')
       .select()
       .eq('test_id', idTest)
+      // ignore: deprecated_member_use
       .execute();
     final count = responseid.data.length;
     AppConstants.questionList = responseid.data;
     AppConstants.numberOfQuestion = count;
-    print(AppConstants.numberOfQuestion);
-    print("Колличество вопросов в тесте - $count");
-    print(AppConstants.questionList);
 
     for(int index = 0; index < responseid.data.length; index++)
     {
-      print("Запись ответа");
       await setupNumberOfAnswers(responseid.data[index]['id']);
     }
 
@@ -128,13 +130,14 @@ class HorizontalScrollWidget extends StatefulWidget {
       .from('Tests_answers')
       .select()
       .eq('question_id', idQuestion)
+      // ignore: deprecated_member_use
       .execute();
     final count = responseid.data.length;
 
     
-    AppConstants.answersList?.add(responseid.data);
+    AppConstants.answersList.add(responseid.data);
+    // ignore: avoid_print
     print("Колличество ответов в вопросе - $count");
-    print(AppConstants.answersList);
   }
 
 
@@ -147,6 +150,7 @@ class HorizontalScrollWidget extends StatefulWidget {
     .from('Tests')
     .select()
     .order('id', ascending: false)
+    // ignore: deprecated_member_use
     .execute();
 
     if (response.status == 200) {
@@ -170,6 +174,7 @@ class HorizontalScrollWidget extends StatefulWidget {
       .from('Users')
       .select('nickname')
       .eq('id', creatorId)
+      // ignore: deprecated_member_use
       .execute();
 
   if (response.status == 200 && response.data != null) {
@@ -190,7 +195,7 @@ class HorizontalScrollWidget extends StatefulWidget {
       future: _dataFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Ошибка: ${snapshot.error}'));
         } else {
@@ -201,8 +206,7 @@ class HorizontalScrollWidget extends StatefulWidget {
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
                   onTap: () async {
-                    // Обработчик нажатия
-                    print('Вы нажали на контейнер $index');
+
 
                     await getTestId(_data[index]['title'], _data[index]['author_id']);
 
@@ -210,7 +214,7 @@ class HorizontalScrollWidget extends StatefulWidget {
                     Navigator.push(
                       context,
                       PageRouteBuilder(
-                              pageBuilder: (context, animation, secondaryAnimation) => FirstOption(),
+                              pageBuilder: (context, animation, secondaryAnimation) => const FirstOption(),
                               transitionsBuilder: (context, animation, secondaryAnimation, child) {
                                 return FadeTransition(opacity: animation, child: child);
                               }
@@ -222,7 +226,7 @@ class HorizontalScrollWidget extends StatefulWidget {
                       height: rectangleHeight,
                       margin: const EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        borderRadius: const BorderRadius.all(Radius.circular(20)),
                         gradient: LinearGradient(
                           colors: widget.gradientColors[
                               index], // Используем цвета из списка для каждого индекса

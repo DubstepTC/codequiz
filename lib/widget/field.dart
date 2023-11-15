@@ -11,7 +11,7 @@ class MyField extends StatefulWidget {
   final ValueChanged<String>? onChange;
   final TextEditingController? controller;
 
-  const MyField({
+  const MyField({super.key, 
     required this.width,
     required this.type,
     required this.controller,
@@ -24,6 +24,7 @@ class MyField extends StatefulWidget {
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _FieldState createState() => _FieldState();
 }
 

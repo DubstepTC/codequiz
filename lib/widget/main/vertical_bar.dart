@@ -2,7 +2,9 @@ import 'package:codequiz/AppConstants/constants.dart';
 import 'package:codequiz/screen/questions/question_type_one.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+// ignore: depend_on_referenced_packages
 import 'package:supabase/supabase.dart';
+// ignore: depend_on_referenced_packages
 import 'package:fluttertoast/fluttertoast.dart';
 
 class VerticalScrollWidget extends StatefulWidget {
@@ -20,15 +22,16 @@ class VerticalScrollWidget extends StatefulWidget {
     [const Color.fromARGB(255, 211, 130, 196),const Color.fromARGB(197, 239, 246, 229)],  // Градиент 8
   ];
 
-  VerticalScrollWidget({required this.width, required this.height, required this.searchText});
+  VerticalScrollWidget({super.key, required this.width, required this.height, required this.searchText});
 
+  @override
+  // ignore: library_private_types_in_public_api
   _VerticalScrollWidgettState createState() => _VerticalScrollWidgettState();
 }
 
   class _VerticalScrollWidgettState extends State<VerticalScrollWidget> {
   
   late Future<List<Map<String, dynamic>>> _dataFuture;
-  List<Map<String, dynamic>> _data = [];
 
   final supabase = SupabaseClient(
     "https://itcswmslhtagkazkjuit.supabase.co",
@@ -45,13 +48,14 @@ class VerticalScrollWidget extends StatefulWidget {
 
   //Запрос на id теста 
   getTestId(testName, nickname) async {
-    int author_id = 0;
+    int authorId = 0;
     
     final response = await supabase
         .from('Users')
         .select('id')
         .eq('nickname', nickname) 
         .single()
+        // ignore: deprecated_member_use
         .execute();
 
     if (response.status != 200) {
@@ -66,7 +70,7 @@ class VerticalScrollWidget extends StatefulWidget {
     } 
     else 
     {
-      author_id = response.data['id'] as int;
+      authorId = response.data['id'] as int;
     }
   
 
@@ -74,10 +78,10 @@ class VerticalScrollWidget extends StatefulWidget {
         .from('Tests')
         .select('id')
         .eq('title', testName) 
-        .eq('author_id', author_id)
+        .eq('author_id', authorId)
         .single()
-        .execute();
-     print(respons.data);   
+        // ignore: deprecated_member_use
+        .execute();  
 
     await setupNumberOfQuestion(respons.data['id']);
   }
@@ -88,17 +92,16 @@ class VerticalScrollWidget extends StatefulWidget {
       .from('Tests_question')
       .select()
       .eq('test_id', idTest)
+      // ignore: deprecated_member_use
       .execute();
     final count = responseid.data.length;
     AppConstants.questionList = responseid.data;
     AppConstants.numberOfQuestion = count;
-    print(AppConstants.numberOfQuestion);
+    // ignore: avoid_print
     print("Колличество вопросов в тесте - $count");
-    print(AppConstants.questionList);
 
     for(int index = 0; index < responseid.data.length; index++)
     {
-      print("Запись ответа");
       await setupNumberOfAnswers(responseid.data[index]['id']);
     }
 
@@ -111,13 +114,9 @@ class VerticalScrollWidget extends StatefulWidget {
       .from('Tests_answers')
       .select()
       .eq('question_id', idQuestion)
+      // ignore: deprecated_member_use
       .execute();
-    final count = responseid.data.length;
-
-    
-    AppConstants.answersList?.add(responseid.data);
-    print("Колличество ответов в вопросе - $count");
-    print(AppConstants.answersList);
+    AppConstants.answersList.add(responseid.data);
   }
 
 
@@ -130,6 +129,7 @@ class VerticalScrollWidget extends StatefulWidget {
     .from('Tests')
     .select()
     .order('id', ascending: true)
+    // ignore: deprecated_member_use
     .execute();
 
     if (response.status == 200) {
@@ -153,6 +153,7 @@ class VerticalScrollWidget extends StatefulWidget {
       .from('Users')
       .select('nickname')
       .eq('id', creatorId)
+      // ignore: deprecated_member_use
       .execute();
 
   if (response.status == 200 && response.data != null) {
@@ -174,31 +175,29 @@ class VerticalScrollWidget extends StatefulWidget {
       future: _dataFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Ошибка: ${snapshot.error}'));
         } else {
-          final _data = snapshot.data ?? [];
+          final data = snapshot.data ?? [];
           return ListView.builder(
               scrollDirection: Axis.vertical,
-              itemCount: _data.length,
+              itemCount: data.length,
               itemBuilder: (BuildContext context, int index) {
-                String title = _data[index]['title'];
+                String title = data[index]['title'];
                 if (widget.searchText.isNotEmpty && !title.toLowerCase().contains(widget.searchText.toLowerCase())) {
                   return Container();
                 }
                 return GestureDetector(
                   onTap: () async {
-                    // Обработчик нажатия
-                    print('Вы нажали на контейнер $index');
 
-                    await getTestId(_data[index]['title'], _data[index]['author_id']);
+                    await getTestId(data[index]['title'], data[index]['author_id']);
 
                     // ignore: use_build_context_synchronously
                     Navigator.push(
                       context,
                       PageRouteBuilder(
-                              pageBuilder: (context, animation, secondaryAnimation) => FirstOption(),
+                              pageBuilder: (context, animation, secondaryAnimation) => const FirstOption(),
                               transitionsBuilder: (context, animation, secondaryAnimation, child) {
                                 return FadeTransition(opacity: animation, child: child);
                               }
@@ -210,7 +209,7 @@ class VerticalScrollWidget extends StatefulWidget {
                       height: rectangleHeight,
                       margin: const EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        borderRadius: const BorderRadius.all(Radius.circular(20)),
                         gradient: LinearGradient(
                           colors: widget.gradientColors[index % widget.gradientColors.length], // Используем цвета из списка для каждого индекса
                           begin: Alignment.topLeft,
@@ -230,9 +229,9 @@ class VerticalScrollWidget extends StatefulWidget {
                             ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(20.0),
-                              child: _data[index]['logo_image_link'] != null
+                              child: data[index]['logo_image_link'] != null
                                   ? Image.network(
-                                      _data[index]['logo_image_link'],
+                                      data[index]['logo_image_link'],
                                       fit: BoxFit.cover,
                                     )
                                   : SvgPicture.asset('assets/images/test.svg'),
@@ -251,7 +250,7 @@ class VerticalScrollWidget extends StatefulWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        _data[index]['title'],
+                                        data[index]['title'],
                                         style: const TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold,
@@ -259,7 +258,7 @@ class VerticalScrollWidget extends StatefulWidget {
                                                 54, 79, 107, 100)),
                                       ),
                                       Text(
-                                        _data[index]['description'],
+                                        data[index]['description'],
                                         style: const TextStyle(
                                             fontSize: 16,
                                             color: Color.fromRGBO(
@@ -280,7 +279,7 @@ class VerticalScrollWidget extends StatefulWidget {
                                             MainAxisAlignment.end,
                                         children: [
                                           Text(
-                                            "от ${_data[index]['author_id']}",
+                                            "от ${data[index]['author_id']}",
                                             textAlign: TextAlign.end,
                                             style: const TextStyle(
                                                 fontSize: 16,
