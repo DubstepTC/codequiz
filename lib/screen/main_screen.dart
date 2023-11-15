@@ -158,10 +158,12 @@ class _MainScreenState extends State<MainScreen> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  UserScreen(),
-                            ),
+                             PageRouteBuilder(
+                              pageBuilder: (context, animation, secondaryAnimation) => UserScreen(),
+                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                return FadeTransition(opacity: animation, child: child);
+                              },
+                            )
                           );
                         },
                         child: imageLoaded

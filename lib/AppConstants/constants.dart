@@ -14,8 +14,9 @@ class AppConstants {
 
   //Переменные для открытия теста
   static int numberOfQuestion = 0;
-  static int numberScreenQuestion = -1;
+  static int numberScreenQuestion = 0;
   static int correctAnswer = 0;
   static List<dynamic>? questionList;
+  static List<dynamic> answersList = [];
   // Другие общие переменные
 }// TODO Implement this library.

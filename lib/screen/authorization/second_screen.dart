@@ -188,9 +188,12 @@ class _SecondScreenState extends State<SecondScreen> {
         // ignore: use_build_context_synchronously
         Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) => FirstScreen(),
-          ),
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) => FirstScreen(),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+          )
         );
       }
     }

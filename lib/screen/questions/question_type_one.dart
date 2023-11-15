@@ -1,53 +1,25 @@
 import 'package:codequiz/AppConstants/constants.dart';
+import 'package:codequiz/screen/questions/result.dart';
+import 'package:codequiz/widget/authorization/reg_en_button.dart';
+import 'package:codequiz/widget/create/text_input.dart';
 import 'package:codequiz/widget/questions/answer.dart';
 import 'package:codequiz/widget/questions/progressbar.dart';
 import 'package:codequiz/widget/text_place.dart';
 import 'package:flutter/material.dart';
 
-  Color _getSectionColor(int index) {
-  // Ваша логика для определения цвета фона каждой секции 
-  // В зависимости от состояния вопроса
-  if (index < 5) {
-    return Colors.green;
-  } else {
-    return Colors.grey;
-  }
+// ignore: must_be_immutable
+class FirstOption extends StatefulWidget {
+  _FirstOptionState createState() => _FirstOptionState();
 }
 
-// ignore: must_be_immutable
-class FirstOption extends StatelessWidget {
-  late List<Color> _sectionColors;
-
-  FirstOption({super.key});
-
-  List<Widget> _buildSectionWidgets() {
-    return List<Widget>.generate(20, (index) {
-      final sectionColor = _sectionColors[index];
-      return Container(
-        height: 60,
-        width: 40,
-        color: sectionColor,
-        child: Center(
-          child: Text(
-            (index + 1).toString(),
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      );
-    });
-  }
+ class _FirstOptionState extends State<FirstOption> {
+  final TextEditingController _answerController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    AppConstants.numberScreenQuestion += 1;
     print(AppConstants.numberScreenQuestion);
-    double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-
-    _sectionColors = List<Color>.generate(20, (index) => _getSectionColor(index));
+    double screenWidth = MediaQuery.of(context).size.width;
 
     return WillPopScope(
       onWillPop: () async {
@@ -55,41 +27,120 @@ class FirstOption extends StatelessWidget {
         return false;
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
+                flex: 1,
                 child: Container(
                   alignment: Alignment.topCenter,
                   child: Column(
                     children: [
-                      ProgressBarWidget(AppConstants.numberScreenQuestion),
-                      SizedBox(height: screenHeight * 0.05,),
+                      TestProgressWidget(AppConstants.numberScreenQuestion / AppConstants.numberOfQuestion),
                       TextPlace(
-                        font: "Roboto",
-                          txt: AppConstants.questionList![AppConstants.numberScreenQuestion]['question_title'],
-                          align: TextAlign.center,
-                          st: FontWeight.bold,
-                          width: 0.8,
-                          height: 0.2,
-                          backgroundColor: Color.fromRGBO(23, 24, 24, 0),
-                          colortxt: Color.fromRGBO(54, 79, 107, 100),
-                          size: 20),
+                        font: "Source Sans Pro",
+                        txt: AppConstants.questionList![AppConstants.numberScreenQuestion]['question_title'],
+                        align: TextAlign.center,
+                        st: FontWeight.bold,
+                        width: 0.8,
+                        height: 0.25,
+                        backgroundColor: const Color.fromRGBO(23, 24, 24, 0),
+                        colortxt: const Color.fromRGBO(54, 79, 107, 100),
+                        size: 20,
+                      ),
+                      if(AppConstants.questionList![AppConstants.numberScreenQuestion]['question_picture'] != "")
+                      Container
+                      (
+                        height: screenHeight * 0.32, 
+                        width: screenWidth * 0.6,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.0),
+                          color: Colors.transparent, // замените на нужный вам цвет
+                        ),
+                        child: ClipRRect(borderRadius: BorderRadius.circular(20.0), child:Image.network(AppConstants.questionList![AppConstants.numberScreenQuestion]['question_picture'], fit: BoxFit.fill,),
+                        ),
+                      )  
+                      else
+                      SizedBox(height: screenHeight * 0,),
+                      SizedBox(height: screenHeight * 0.05,),
+                      if(AppConstants.questionList![AppConstants.numberScreenQuestion]['type'] == false)
                       Column(
                         children: [
-                          AnswerRowWidget('Ответ 1'),
-                          SizedBox(height: screenHeight * 0.005,),
-                          AnswerRowWidget('Ответ 2'),
-                          SizedBox(height: screenHeight * 0.005,),
-                          AnswerRowWidget('Ответ 3'),
-                          SizedBox(height: screenHeight * 0.005,),
-                          AnswerRowWidget('Ответ 4'),
+                          for(int index = 0; index < AppConstants.answersList[AppConstants.numberScreenQuestion].length; index++)
+                          AnswerRowWidget(AppConstants.answersList[AppConstants.numberScreenQuestion][index]['text_answer'],AppConstants.answersList[AppConstants.numberScreenQuestion][index]['is_correct_answer']),
                           SizedBox(height: screenHeight * 0.005,),
                         ],
-                      ),
-                      SizedBox(height: screenHeight * 0.1,),
+                      )
+                      else
+                      Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              TextInput(
+                                width: 0.9,
+                                quantity: 250,
+                                lines: 3,
+                                height: 0.15,
+                                colortxt: Colors.grey,
+                                mode: false,
+                                hinttxt: "Введите ответ на вопрос",
+                                controller: _answerController,
+                                onChange: (value){
+                                  setState(() {
+                                    _answerController.text = value;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: screenHeight * 0.05,),
+                          ButtonEntry(
+                            isEnabled: true,
+                            txt: "Ответить на вопрос",
+                            size: 16,
+                            check: () {
+                              print(AppConstants.answersList[AppConstants.numberScreenQuestion][0]['text_answer']);
+                              if(_answerController.text == AppConstants.answersList[AppConstants.numberScreenQuestion][0]['text_answer'])
+                              {
+                                print("ответил");
+                                AppConstants.correctAnswer += 1;
+                              }
+                              if(AppConstants.numberScreenQuestion == AppConstants.numberOfQuestion - 1)
+                              {
+                                Navigator.push(
+                                  context,
+                                  PageRouteBuilder(
+                                    pageBuilder: (context, animation, secondaryAnimation) => ResultScreen(),
+                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                      return FadeTransition(opacity: animation, child: child);
+                                    },
+                                  ),
+                                );
+                              }
+                              else
+                              {
+                                AppConstants.numberScreenQuestion += 1;
+                                Navigator.push(
+                                  context,
+                                  PageRouteBuilder(
+                                    pageBuilder: (context, animation, secondaryAnimation) => FirstOption(),
+                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                      return FadeTransition(opacity: animation, child: child);
+                                    },
+                                  ),
+                                );
+                              }
+                            },
+                            width: 0.5,
+                            height: 0.07,
+                            backgroundColor: const Color.fromRGBO(220, 113, 127, 100),
+                            colortxt: Colors.white)
+                        ]
+                      )
                     ],
                   ),
                 ),

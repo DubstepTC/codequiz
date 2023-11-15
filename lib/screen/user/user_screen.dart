@@ -1,3 +1,4 @@
+import 'package:codequiz/screen/main_screen.dart';
 import 'package:codequiz/widget/user/vertical_test.dart';
 import 'package:flutter/material.dart';
 import 'package:codequiz/AppConstants/constants.dart';
@@ -50,7 +51,15 @@ class _UserScreenState extends State<UserScreen> {
                         icon: Icon(Icons.arrow_back),
                         color: Color.fromRGBO(220, 113, 127, 1),
                         onPressed: () {
-                          Navigator.of(context).pop();
+                          Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                              pageBuilder: (context, animation, secondaryAnimation) => MainScreen(),
+                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                return FadeTransition(opacity: animation, child: child);
+                              },
+                            )
+                          );
                         },
                       ),
                       const ImageMain(

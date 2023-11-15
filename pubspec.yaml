@@ -19,6 +19,7 @@ dependencies:
   image_crop: ^0.4.1 
   flutter_slidable: ^3.0.1
   mailer: ^6.0.1
+  percent_indicator: ^4.2.3 
 
 flutter_icons:
   android: "launcher_icon"

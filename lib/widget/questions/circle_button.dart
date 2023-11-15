@@ -4,6 +4,9 @@ import 'package:codequiz/screen/questions/result.dart';
 import 'package:flutter/material.dart';
 
 class CircleButton extends StatefulWidget {
+  bool check;
+
+  CircleButton(this.check, {super.key});
   @override
   _CircleButtonState createState() => _CircleButtonState();
 }
@@ -21,20 +24,35 @@ class _CircleButtonState extends State<CircleButton> {
         setState(() {
           isActivated = !isActivated;
         });
+        if(widget.check == true)
+        {
+          AppConstants.correctAnswer += 1 ;
+        }
         if(AppConstants.numberScreenQuestion == AppConstants.numberOfQuestion - 1)
         {
           Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ResultScreen()),
-        );
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) => ResultScreen(),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                return FadeTransition(opacity: animation, child: child);
+              },
+            ),
+          );
         }
         else
         {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => FirstOption()),
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) => FirstOption(),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+          ),
         );
         }
+        AppConstants.numberScreenQuestion += 1;
       },
       child: Container(
         width: screenWidth * 0.1,

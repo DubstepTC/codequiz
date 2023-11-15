@@ -1,4 +1,5 @@
 import 'package:codequiz/AppConstants/constants.dart';
+import 'package:codequiz/screen/user/user_screen.dart';
 import 'package:codequiz/widget/authorization/reg_en_button.dart';
 import 'package:codequiz/widget/image.dart';
 import 'package:flutter/material.dart';
@@ -163,7 +164,12 @@ class _SeettingsScreenState extends State<SettingsScreen> {
                         icon: Icon(Icons.arrow_back),
                         color: Color.fromRGBO(220, 113, 127, 1),
                         onPressed: () {
-                          Navigator.of(context).pop();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                              builder: (context) => UserScreen(), 
+                              ),
+                          );
                         },
                       ),
                       const ImageMain(

@@ -89,12 +89,12 @@ class _FirstScreenState extends State<FirstScreen> {
       // ignore: use_build_context_synchronously
       Navigator.push(
         context,
-        MaterialPageRoute(
-          builder: (context) => SecondScreen(
-            dataFromControllerOne: _emailController.text,
-            dataFromControllerTwo: _passwordController.text,
-          ), 
-        ),
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) => SecondScreen(dataFromControllerOne: _emailController.text, dataFromControllerTwo: _passwordController.text,),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+        )
       );
     }
   }
@@ -355,9 +355,12 @@ class _FirstScreenState extends State<FirstScreen> {
                                             // ignore: use_build_context_synchronously
                                             Navigator.push(
                                               context,
-                                              MaterialPageRoute(
-                                                builder: (context) => MainScreen(), 
-                                              ),
+                                              PageRouteBuilder(
+                                                pageBuilder: (context, animation, secondaryAnimation) => MainScreen(),
+                                                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                                  return FadeTransition(opacity: animation, child: child);
+                                                },
+                                              )
                                             );
                                           } else {
                                             Fluttertoast.showToast(

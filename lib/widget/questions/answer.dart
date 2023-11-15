@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 
 class AnswerRowWidget extends StatelessWidget {
   final String answerText;
+  final bool check;
 
-  AnswerRowWidget(this.answerText);
+  AnswerRowWidget(this.answerText, this.check);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,7 @@ class AnswerRowWidget extends StatelessWidget {
     return Row(
       children: [
         SizedBox(width: screenWidth * 0.1),
-        CircleButton(),
+        CircleButton(check),
         SizedBox(width: screenWidth * 0.1),
         Text(answerText, style: const TextStyle(color: Color.fromRGBO(54, 79, 107, 100), fontSize: 16)),
       ],

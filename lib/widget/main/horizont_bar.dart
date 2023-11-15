@@ -1,5 +1,7 @@
 import 'package:codequiz/AppConstants/constants.dart';
 import 'package:codequiz/screen/questions/question_type_one.dart';
+import 'package:codequiz/screen/questions/result.dart';
+import 'package:codequiz/screen/user/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:supabase/supabase.dart';
@@ -109,7 +111,33 @@ class HorizontalScrollWidget extends StatefulWidget {
     print(AppConstants.numberOfQuestion);
     print("Колличество вопросов в тесте - $count");
     print(AppConstants.questionList);
+
+    for(int index = 0; index < responseid.data.length; index++)
+    {
+      print("Запись ответа");
+      await setupNumberOfAnswers(responseid.data[index]['id']);
+    }
+
+   
   }
+
+  setupNumberOfAnswers(idQuestion) async
+  {
+   final responseid = await supabase
+      .from('Tests_answers')
+      .select()
+      .eq('question_id', idQuestion)
+      .execute();
+    final count = responseid.data.length;
+
+    
+    AppConstants.answersList?.add(responseid.data);
+    print("Колличество ответов в вопросе - $count");
+    print(AppConstants.answersList);
+  }
+
+
+  
 
 
   Future<List<Map<String, dynamic>>> fetchDataFromSupaBase() async {
@@ -158,7 +186,7 @@ class HorizontalScrollWidget extends StatefulWidget {
     double rectangleHeight = screenHeight * widget.height;
 
     return FutureBuilder<List<Map<String, dynamic>>>(
-      future: fetchDataFromSupaBase(),
+      future: _dataFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
@@ -180,9 +208,12 @@ class HorizontalScrollWidget extends StatefulWidget {
                     // ignore: use_build_context_synchronously
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => FirstOption(), 
-                      ),
+                      PageRouteBuilder(
+                              pageBuilder: (context, animation, secondaryAnimation) => FirstOption(),
+                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                return FadeTransition(opacity: animation, child: child);
+                              }
+                      )
                     );
                   },
                   child: Container(
