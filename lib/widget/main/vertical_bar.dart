@@ -1,9 +1,11 @@
+import 'package:codequiz/AppConstants/constants.dart';
+import 'package:codequiz/screen/questions/question_type_one.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:supabase/supabase.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class VerticalScrollWidget extends StatelessWidget {
+class VerticalScrollWidget extends StatefulWidget {
   final double width;
   final double height;
   final String searchText;
@@ -20,14 +22,115 @@ class VerticalScrollWidget extends StatelessWidget {
 
   VerticalScrollWidget({required this.width, required this.height, required this.searchText});
 
+  _VerticalScrollWidgettState createState() => _VerticalScrollWidgettState();
+}
+
+  class _VerticalScrollWidgettState extends State<VerticalScrollWidget> {
+  
+  late Future<List<Map<String, dynamic>>> _dataFuture;
+  List<Map<String, dynamic>> _data = [];
+
   final supabase = SupabaseClient(
     "https://itcswmslhtagkazkjuit.supabase.co",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml0Y3N3bXNsaHRhZ2themtqdWl0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTgyMzY3NzYsImV4cCI6MjAxMzgxMjc3Nn0.Lj0GiKJXMkN2ixwCARaOVrenlvlPSppueBtOks7VR8s",
   );
 
+  
+  @override
+  void initState() {
+    super.initState();
+    _dataFuture = fetchDataFromSupaBase();
+  } 
+
+
+  //Запрос на id теста 
+  getTestId(testName, nickname) async {
+    int author_id = 0;
+    
+    final response = await supabase
+        .from('Users')
+        .select('id')
+        .eq('nickname', nickname) 
+        .single()
+        .execute();
+
+    if (response.status != 200) {
+      Fluttertoast.showToast(
+        msg: "Ошибка при загрузке тетста",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    } 
+    else 
+    {
+      author_id = response.data['id'] as int;
+    }
+  
+
+    final respons = await supabase
+        .from('Tests')
+        .select('id')
+        .eq('title', testName) 
+        .eq('author_id', author_id)
+        .single()
+        .execute();
+     print(respons.data);   
+
+    await setupNumberOfQuestion(respons.data['id']);
+  }
+
+  setupNumberOfQuestion(idTest) async
+  {
+   final responseid = await supabase
+      .from('Tests_question')
+      .select()
+      .eq('test_id', idTest)
+      .execute();
+    final count = responseid.data.length;
+    AppConstants.questionList = responseid.data;
+    AppConstants.numberOfQuestion = count;
+    print(AppConstants.numberOfQuestion);
+    print("Колличество вопросов в тесте - $count");
+    print(AppConstants.questionList);
+
+    for(int index = 0; index < responseid.data.length; index++)
+    {
+      print("Запись ответа");
+      await setupNumberOfAnswers(responseid.data[index]['id']);
+    }
+
+   
+  }
+
+  setupNumberOfAnswers(idQuestion) async
+  {
+   final responseid = await supabase
+      .from('Tests_answers')
+      .select()
+      .eq('question_id', idQuestion)
+      .execute();
+    final count = responseid.data.length;
+
+    
+    AppConstants.answersList?.add(responseid.data);
+    print("Колличество ответов в вопросе - $count");
+    print(AppConstants.answersList);
+  }
+
+
+  
+
+
   Future<List<Map<String, dynamic>>> fetchDataFromSupaBase() async {
     // Выполняем запрос к таблице "Tests"
-    final response = await supabase.from('Tests').select().execute();
+    final response = await supabase
+    .from('Tests')
+    .select()
+    .order('id', ascending: true)
+    .execute();
 
     if (response.status == 200) {
       // Возвращаем данные, если запрос выполнен успешно
@@ -59,34 +162,48 @@ class VerticalScrollWidget extends StatelessWidget {
   }
 }
 
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double rectangleWidth = screenWidth * width;
+    double rectangleWidth = screenWidth * widget.width;
     double screenHeight = MediaQuery.of(context).size.height;
-    double rectangleHeight = screenHeight * height;
+    double rectangleHeight = screenHeight * widget.height;
 
     return FutureBuilder<List<Map<String, dynamic>>>(
-      future: fetchDataFromSupaBase(),
+      future: _dataFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Ошибка: ${snapshot.error}'));
         } else {
-          final data = snapshot.data ?? [];
+          final _data = snapshot.data ?? [];
           return ListView.builder(
               scrollDirection: Axis.vertical,
-              itemCount: data.length,
+              itemCount: _data.length,
               itemBuilder: (BuildContext context, int index) {
-                String title = data[index]['title'];
-                if (searchText.isNotEmpty && !title.toLowerCase().contains(searchText.toLowerCase())) {
+                String title = _data[index]['title'];
+                if (widget.searchText.isNotEmpty && !title.toLowerCase().contains(widget.searchText.toLowerCase())) {
                   return Container();
                 }
                 return GestureDetector(
-                  onTap: () {
+                  onTap: () async {
                     // Обработчик нажатия
                     print('Вы нажали на контейнер $index');
+
+                    await getTestId(_data[index]['title'], _data[index]['author_id']);
+
+                    // ignore: use_build_context_synchronously
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                              pageBuilder: (context, animation, secondaryAnimation) => FirstOption(),
+                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                return FadeTransition(opacity: animation, child: child);
+                              }
+                      )
+                    );
                   },
                   child: Container(
                       width: rectangleWidth,
@@ -95,7 +212,7 @@ class VerticalScrollWidget extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                         gradient: LinearGradient(
-                          colors: gradientColors[index % gradientColors.length], // Используем цвета из списка для каждого индекса
+                          colors: widget.gradientColors[index % widget.gradientColors.length], // Используем цвета из списка для каждого индекса
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
@@ -113,9 +230,9 @@ class VerticalScrollWidget extends StatelessWidget {
                             ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(20.0),
-                              child: data[index]['logo_image_link'] != null
+                              child: _data[index]['logo_image_link'] != null
                                   ? Image.network(
-                                      data[index]['logo_image_link'],
+                                      _data[index]['logo_image_link'],
                                       fit: BoxFit.cover,
                                     )
                                   : SvgPicture.asset('assets/images/test.svg'),
@@ -134,7 +251,7 @@ class VerticalScrollWidget extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        data[index]['title'],
+                                        _data[index]['title'],
                                         style: const TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold,
@@ -142,7 +259,7 @@ class VerticalScrollWidget extends StatelessWidget {
                                                 54, 79, 107, 100)),
                                       ),
                                       Text(
-                                        data[index]['description'],
+                                        _data[index]['description'],
                                         style: const TextStyle(
                                             fontSize: 16,
                                             color: Color.fromRGBO(
@@ -163,7 +280,7 @@ class VerticalScrollWidget extends StatelessWidget {
                                             MainAxisAlignment.end,
                                         children: [
                                           Text(
-                                            "от ${data[index]['author_id']}",
+                                            "от ${_data[index]['author_id']}",
                                             textAlign: TextAlign.end,
                                             style: const TextStyle(
                                                 fontSize: 16,

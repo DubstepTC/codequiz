@@ -5,12 +5,15 @@ import 'package:codequiz/screen/main_screen.dart';
 import 'package:codequiz/widget/authorization/reg_en_button.dart';
 import 'package:codequiz/widget/create/question/question_list.dart';
 import 'package:codequiz/widget/create/test_view.dart';
-import 'package:supabase/supabase.dart';
+// ignore: depend_on_referenced_packages
+import "package:supabase/supabase.dart";
 import 'package:codequiz/widget/image.dart';
 import 'package:codequiz/widget/text_place.dart';
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:fluttertoast/fluttertoast.dart';
 
+// ignore: must_be_immutable
 class SecondCreateScreen extends StatefulWidget {
   final String nickname;
   final String testname;
@@ -28,6 +31,7 @@ class SecondCreateScreen extends StatefulWidget {
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _SecondCreateScreenState createState() => _SecondCreateScreenState();
 }
 
@@ -45,12 +49,13 @@ class _SecondCreateScreenState extends State<SecondCreateScreen> {
     final responseid = await supabase
     .from('Tests')
     .select()
+    // ignore: deprecated_member_use
     .execute();
     final count = responseid.data.length;
     final int newId = count + 1;
     AppConstants.testID = newId;
 
-    print("Создание теста");
+    // ignore: unused_local_variable
     final response = await supabase.from('Tests').insert([
         {
           'id': newId,
@@ -59,6 +64,7 @@ class _SecondCreateScreenState extends State<SecondCreateScreen> {
           'author_id': AppConstants.userID,
           'logo_image_link': AppConstants.urlTest,
         }
+      // ignore: deprecated_member_use
       ]).execute();
 
  }
@@ -72,7 +78,7 @@ class _SecondCreateScreenState extends State<SecondCreateScreen> {
       // ignore: unused_local_variable
       final response = await supabase.storage
           .from('images')
-          .upload('images/$img.jpg', imageFile!);
+          .upload('images/$img.jpg', imageFile);
 
       final imageUrl = supabase.storage
           .from('images')
@@ -91,6 +97,7 @@ class _SecondCreateScreenState extends State<SecondCreateScreen> {
       final responseid = await supabase
       .from('Tests_question')
       .select()
+      // ignore: deprecated_member_use
       .execute();
       final count = responseid.data.length;
       int newId = count + 1;
@@ -105,7 +112,7 @@ class _SecondCreateScreenState extends State<SecondCreateScreen> {
 
       for (int index = 0; index < widget.receivedData!.length; index++, newId++){
 
-        print("Создание вопроса");
+        // ignore: unused_local_variable
         final response = await supabase.from('Tests_question').insert([
             {
               'id': newId,
@@ -114,6 +121,7 @@ class _SecondCreateScreenState extends State<SecondCreateScreen> {
               'type': widget.receivedData![index]['type'],
               'test_id': AppConstants.testID,
             }
+        // ignore: deprecated_member_use
         ]).execute();
 
         if(widget.receivedData![index]['type'] == false)
@@ -146,7 +154,7 @@ class _SecondCreateScreenState extends State<SecondCreateScreen> {
         // ignore: unused_local_variable
         final response = await supabase.storage
             .from('images')
-            .upload('images/$img.jpg', imageFile!);
+            .upload('images/$img.jpg', imageFile);
 
         final imageUrl = supabase.storage
             .from('images')
@@ -161,10 +169,11 @@ class _SecondCreateScreenState extends State<SecondCreateScreen> {
 
  // Запись ответов на тест в бд 
 
-  Future<void> createNewAnswers(List<Map<dynamic, dynamic>> savedData, int question_id) async { 
+  Future<void> createNewAnswers(List<Map<dynamic, dynamic>> savedData, int questionId) async { 
       final responseid = await supabase
       .from('Tests_answers')
       .select()
+      // ignore: deprecated_member_use
       .execute();
       final count = responseid.data.length;
       int newId = count + 1;
@@ -179,45 +188,48 @@ class _SecondCreateScreenState extends State<SecondCreateScreen> {
 
       for (int index = 0; index < savedData.length; index++, newId++){
 
-        print("Создание ответа");
+        // ignore: unused_local_variable
         final response = await supabase.from('Tests_answers').insert([
             {
               'id': newId,
               'text_answer': savedData[index]['answerText'],
               'is_correct_answer': savedData[index]['isBoolean'],
               'picture_link': savedData[index]['path'],
-              'question_id': question_id,
+              'question_id': questionId,
             }
+        // ignore: deprecated_member_use
         ]).execute();
       }
   }
 
   // Запись одного ответа на тест в бд 
 
-  Future<void> createNewAnswer(int question_id, String answer) async { 
+  Future<void> createNewAnswer(int questionId, String answer) async { 
       final responseid = await supabase
       .from('Tests_answers')
       .select()
+      // ignore: deprecated_member_use
       .execute();
       final count = responseid.data.length;
       int newId = count + 1;
 
-      print("Создание письменного ответа");
+
+      // ignore: unused_local_variable
       final response = await supabase.from('Tests_answers').insert([
           {
             'id': newId,
             'text_answer': answer,
             'is_correct_answer': true,
             'picture_link': "",
-            'question_id': question_id,
+            'question_id': questionId,
           }
+      // ignore: deprecated_member_use
       ]).execute();
 
   }
 
   @override
   Widget build(BuildContext context) {
-    print(widget.receivedData);
     return Scaffold(
       resizeToAvoidBottomInset: false, 
       body: SafeArea(
@@ -236,8 +248,8 @@ class _SecondCreateScreenState extends State<SecondCreateScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       IconButton(
-                        icon: Icon(Icons.arrow_back),
-                        color: Color.fromRGBO(220, 113, 127, 1),
+                        icon: const Icon(Icons.arrow_back),
+                        color: const Color.fromRGBO(220, 113, 127, 1),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
@@ -301,7 +313,7 @@ class _SecondCreateScreenState extends State<SecondCreateScreen> {
                         width: 0.8, 
                         height: 0.04, 
                         backgroundColor: Colors.transparent, 
-                        colortxt: const Color.fromRGBO(54, 79, 107, 100), 
+                        colortxt: Color.fromRGBO(54, 79, 107, 100), 
                         size: 24
                       ),
                     ],

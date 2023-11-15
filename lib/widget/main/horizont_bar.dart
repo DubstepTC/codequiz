@@ -93,7 +93,8 @@ class HorizontalScrollWidget extends StatefulWidget {
         .eq('author_id', author_id)
         .single()
         .execute();
-     print(respons.data);   
+     AppConstants.activity =  "${AppConstants.activity},${respons.data['id']}";
+     print(AppConstants.activity);
 
     await setupNumberOfQuestion(respons.data['id']);
   }

@@ -11,6 +11,8 @@ class AppConstants {
   static File? image;
   static List<Map<dynamic, dynamic>>? idQuestion;
 
+  static String activity = "0";
+
 
   //Переменные для открытия теста
   static int numberOfQuestion = 0;

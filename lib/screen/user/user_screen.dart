@@ -1,4 +1,5 @@
 import 'package:codequiz/screen/main_screen.dart';
+import 'package:codequiz/widget/user/activity.dart';
 import 'package:codequiz/widget/user/vertical_test.dart';
 import 'package:flutter/material.dart';
 import 'package:codequiz/AppConstants/constants.dart';
@@ -184,10 +185,10 @@ class _UserScreenState extends State<UserScreen> {
             ?
             Expanded(
               flex: 6,
-              child: VerticalScrollWidgetUser(
+              child: Activity(
                 height: 0.18,
                 width: 0.75,
-                searchText: "",
+                searchText: AppConstants.activity,
               ),
             )
             :

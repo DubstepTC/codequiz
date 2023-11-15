@@ -4,21 +4,25 @@ import 'package:flutter/material.dart';
 import 'package:codequiz/widget/field.dart';
 import 'package:codequiz/widget/text_place.dart';
 import 'package:codequiz/widget/authorization/pol.dart';
+// ignore: depend_on_referenced_packages
 import 'package:supabase/supabase.dart';
+// ignore: depend_on_referenced_packages
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 class SecondScreen extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _SecondScreenState createState() => _SecondScreenState();
   final String dataFromControllerOne;
   final String dataFromControllerTwo;
-  SecondScreen(
-      {required this.dataFromControllerOne,
+  const SecondScreen(
+      {super.key, required this.dataFromControllerOne,
       required this.dataFromControllerTwo});
 }
 
 class _SecondScreenState extends State<SecondScreen> {
+  // ignore: non_constant_identifier_names
   final TextEditingController _NickNameController = TextEditingController();
   final TextEditingController _educationalOrganizationController =
       TextEditingController();
@@ -105,6 +109,7 @@ class _SecondScreenState extends State<SecondScreen> {
     final responseid = await supabase
     .from('Users')
     .select()
+    // ignore: deprecated_member_use
     .execute();
     final count = responseid.data.length + 2;
     final int newId = count + 1;
@@ -115,6 +120,7 @@ class _SecondScreenState extends State<SecondScreen> {
         .from('Users')
         .select()
         .eq('nickname', nickname)
+        // ignore: deprecated_member_use
         .execute();
 
     if (checkResponse.status != 200) {
@@ -154,6 +160,7 @@ class _SecondScreenState extends State<SecondScreen> {
           'gender': _polController.text,
           'educational_organization': _educationalOrganizationController.text
         }
+      // ignore: deprecated_member_use
       ]).execute();
 
       if (response.status == 200) {
@@ -189,7 +196,7 @@ class _SecondScreenState extends State<SecondScreen> {
         Navigator.push(
           context,
           PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) => FirstScreen(),
+            pageBuilder: (context, animation, secondaryAnimation) => const FirstScreen(),
             transitionsBuilder: (context, animation, secondaryAnimation, child) {
               return FadeTransition(opacity: animation, child: child);
             },
@@ -214,8 +221,8 @@ class _SecondScreenState extends State<SecondScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     IconButton(
-                        icon: Icon(Icons.arrow_back),
-                        color: Color.fromRGBO(220, 113, 127, 1),
+                        icon: const Icon(Icons.arrow_back),
+                        color: const Color.fromRGBO(220, 113, 127, 1),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },

@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 // ignore: depend_on_referenced_packages
 import 'package:supabase/supabase.dart';
 
-class VerticalScrollWidgetUser extends StatelessWidget {
+class Activity extends StatelessWidget {
   final double width;
   final double height;
   final String searchText;
@@ -17,7 +17,7 @@ class VerticalScrollWidgetUser extends StatelessWidget {
     [const Color.fromARGB(255, 174, 208, 223), const Color(0xCDE1E3FF)], // Градиент 7
   ];
 
-  VerticalScrollWidgetUser({super.key, required this.width, required this.height, required this.searchText});
+  Activity({super.key, required this.width, required this.height, required this.searchText});
 
   final supabase = SupabaseClient(
     "https://itcswmslhtagkazkjuit.supabase.co",
@@ -80,8 +80,8 @@ class VerticalScrollWidgetUser extends StatelessWidget {
               scrollDirection: Axis.vertical,
               itemCount: data.length,
               itemBuilder: (BuildContext context, int index) {
-                String title = data[index]['author_id'];
-                if (searchText.isNotEmpty && !title.toLowerCase().contains(searchText.toLowerCase())) {
+                int title = data[index]['id'];
+                if(searchText.isNotEmpty && !searchText.split(',').any((word) => title.toString() == word.trim())) {
                   return Container();
                 }
                 return GestureDetector(

@@ -5,8 +5,11 @@ import 'package:codequiz/widget/image.dart';
 
 
 class ZeroScreen extends StatefulWidget{
+  const ZeroScreen({super.key});
+
 
 @override
+  // ignore: library_private_types_in_public_api
   _ZeroScreenState createState() => _ZeroScreenState();
 }
 
@@ -15,8 +18,8 @@ class _ZeroScreenState extends State<ZeroScreen> {
    @override
   Widget build(BuildContext context) {
 
-    Timer(Duration(seconds: 2), () { 
-      Navigator.push(context, MaterialPageRoute(builder: (context) => FirstScreen() ));
+    Timer(const Duration(seconds: 2), () { 
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const FirstScreen() ));
     });
     double screenHeight = MediaQuery.of(context).size.height;
 

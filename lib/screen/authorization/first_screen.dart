@@ -9,12 +9,17 @@ import 'package:codequiz/widget/authorization/authorization_button.dart';
 import 'package:codequiz/widget/field.dart';
 import 'package:codequiz/widget/forget_password.dart';
 import 'package:flutter/services.dart';
+// ignore: depend_on_referenced_packages
 import 'package:supabase/supabase.dart';
+// ignore: depend_on_referenced_packages
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:codequiz/AppConstants/constants.dart';
 
 class FirstScreen extends StatefulWidget {
+  const FirstScreen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _FirstScreenState createState() => _FirstScreenState();
   
 }
@@ -62,6 +67,7 @@ class _FirstScreenState extends State<FirstScreen> {
       .from('Users')
       .select()
       .eq('email', _emailController.text)
+      // ignore: deprecated_member_use
       .execute();
 
     if (checkResponse.status != 200) {
@@ -105,6 +111,7 @@ class _FirstScreenState extends State<FirstScreen> {
         .select('id')
         .eq('nickname', name) 
         .single()
+        // ignore: deprecated_member_use
         .execute();
 
     if (response.status != 200) {
@@ -326,6 +333,14 @@ class _FirstScreenState extends State<FirstScreen> {
                                     height: 0.09,
                                     check: () async {
 
+                                      final activity = await supabase
+                                        .from('Users')
+                                        .select('activity')
+                                        .eq('nickname', _nameController.text)
+                                        // ignore: deprecated_member_use
+                                        .execute();
+                                      AppConstants.activity = activity.data[0]['activity'].toString();
+
                                       String username = _nameController.text;
                                       String password = _passwordController.text;
 
@@ -335,6 +350,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                             .select()
                                             .eq('nickname', username)
                                             .eq('password', password)
+                                            // ignore: deprecated_member_use
                                             .execute();
 
                                         if (response.status == 200) {
@@ -378,7 +394,6 @@ class _FirstScreenState extends State<FirstScreen> {
                                         }
                                         } catch (error) {
                                           // Обработка ошибки
-                                          print(error.toString());
                                           Fluttertoast.showToast(
                                               msg: "Данного ника нет в системе",
                                               toastLength: Toast.LENGTH_SHORT,

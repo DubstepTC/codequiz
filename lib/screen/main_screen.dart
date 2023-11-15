@@ -155,7 +155,18 @@ class _MainScreenState extends State<MainScreen> {
                       ),
                       SizedBox(width: screenWidth * 0.03),
                       InkWell(
-                        onTap: () {
+                        onTap: () async {
+
+                          String withoutDuplicates = AppConstants.activity.split(',').toSet().join(', ');
+                          print(withoutDuplicates);
+
+                          final response = await supabase
+                            .from('Users')
+                            .update({'activity': AppConstants.activity})
+                            .eq('id', AppConstants.userID)
+                            .execute();
+
+                          // ignore: use_build_context_synchronously
                           Navigator.push(
                             context,
                              PageRouteBuilder(
