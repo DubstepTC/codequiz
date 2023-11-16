@@ -57,6 +57,7 @@ class _QuestionListState extends State<QuestionList> {
                   setState(() {
                     questionTexts.removeAt(index);
                     questionVariables.removeAt(index);
+                    savedata = List.from(questionVariables);
                   });
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Вопрос удалён')),
@@ -105,6 +106,7 @@ class _QuestionListState extends State<QuestionList> {
                           questionVariables[index]['path'] = result['path'];
                           questionVariables[index]['answers'] = result['answers'];
                           questionVariables[index]['answerText'] = result['answerText'];
+                          _sendDataBack(savedata);
                         });
                       }
                     },

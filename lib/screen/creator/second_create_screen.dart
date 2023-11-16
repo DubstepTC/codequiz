@@ -36,12 +36,25 @@ class SecondCreateScreen extends StatefulWidget {
 }
 
 class _SecondCreateScreenState extends State<SecondCreateScreen> {
+  
+   void _updateWidget() {
+    // Ваши дополнительные действия при обновлении
+
+    // Вызов setState для перестройки виджета
+    setState(() {
+      // Ваши изменения состояния здесь, если необходимо
+    });
+  }
 
   final supabase = SupabaseClient(
   "https://itcswmslhtagkazkjuit.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml0Y3N3bXNsaHRhZ2themtqdWl0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTgyMzY3NzYsImV4cCI6MjAxMzgxMjc3Nn0.Lj0GiKJXMkN2ixwCARaOVrenlvlPSppueBtOks7VR8s",
   );
 
+  void initState() {
+    super.initState();
+    widget.receivedData;
+  }
  // Создание теста в бд
 
  // Создание теста 
@@ -345,7 +358,9 @@ class _SecondCreateScreenState extends State<SecondCreateScreen> {
                       txt: "Создать тест", 
                       size: 16, 
                       check: () async {
-
+                        print(widget.receivedData);
+                        _updateWidget;
+                        print(widget.receivedData);
                         if (widget.receivedData != null)
                         {
                         await saveImageTestToSupabase(widget.path);
