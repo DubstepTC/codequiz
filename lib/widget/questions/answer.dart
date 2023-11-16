@@ -22,9 +22,12 @@ class AnswerRowWidget extends StatelessWidget {
           CircleButton(check),
           SizedBox(width: screenWidth * 0.1),
           if (url == "")
-            Text(answerText,
+          Expanded(
+            child: Text(answerText,
+                maxLines: 10,
                 style: const TextStyle(
                     color: Color.fromRGBO(54, 79, 107, 100), fontSize: 16))
+          )
           else
             Container(
               height: screenHeight * 0.32,
