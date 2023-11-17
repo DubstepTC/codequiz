@@ -91,7 +91,7 @@ class _AnswerSettingsFirstState extends State<AnswerSettingsFirst> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             TextPlace(
-                              txt: "Введите текст вопроса",
+                              txt: "Введите текст ответа",
                               font: "Source Sans Pro",
                               align: TextAlign.center,
                               st: FontWeight.bold,
